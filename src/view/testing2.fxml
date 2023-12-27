@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXPaginatedTableView?>
+<?import io.github.palexdev.materialfx.controls.MFXTableColumn?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import org.controlsfx.control.MasterDetailPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <MasterDetailPane layoutX="152.0" layoutY="191.0" />
+      <MFXPaginatedTableView layoutX="271.0" layoutY="92.0" />
+      <MFXTableColumn layoutX="314.0" layoutY="154.0" />
+   </children>
 </AnchorPane>
-

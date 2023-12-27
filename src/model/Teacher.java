@@ -10,6 +10,24 @@ public class Teacher {
 	private LocalDate birthday;
 	private String description;
 	private List<Commission> commissions;
+	public Teacher(String name, String surname, LocalDate birthday, String description) {
+		this.name = name;
+		this.surname = surname;
+		this.birthday = birthday;
+		this.description = description;
+	}
+	public String getName() {
+		return name;
+	}
+	public String getSurname() {
+		return surname;
+	}
+	public LocalDate getBirthday() {
+		return birthday;
+	}
+	public String getDescription() {
+		return description;
+	}
 	/*
 	public List<Lesson> getLessons(){
 		return this.commissions.stream().map(c -> c.getLesson()).collect(Collectors.toList());
