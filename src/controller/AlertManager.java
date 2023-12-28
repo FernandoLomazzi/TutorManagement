@@ -44,7 +44,7 @@ public class AlertManager {
 			case WARNING:
 				icon = new MFXFontIcon("fas-circle-exclamation", 18);
 				error.getStyleClass().add("mfx-warn-dialog");
-				
+
 				break;
 			default:
 				icon = null;

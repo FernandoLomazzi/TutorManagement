@@ -1,5 +1,8 @@
-- Make css
-- Table could exceed screen
-- Resize column
-- Table filters
-- Check adding multiple entities
+To do:
+	- Make css
+	- Table filters language
+	- Resize column to use all space
+	- Add NN to education_level in db
+Issues:
+	- Table could exceed screen
+	- Floating label stills up after adding student/teacher

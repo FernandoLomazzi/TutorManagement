@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import javax.swing.event.DocumentEvent.EventType;
-
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
@@ -66,49 +64,20 @@ public class StudentScreenController implements Initializable{
     	setupFields();
 		setupTable();		
 		studentTable.autosizeColumnsOnInitialization();
-		When.onChanged(studentTable.tableRowFactoryProperty()).then((o, n) -> studentTable.autosizeColumns()).listen();
-		
-		/*When.onChanged(studentTable.currentPageProperty())
-			.then((oldValue, newValue) -> studentTable.autosizeColumns())
-			.listen();*/
+		When.onChanged(studentTable.tableRowFactoryProperty())
+			.then((o, n) -> studentTable.autosizeColumns()).listen();
 		students = FXCollections.observableArrayList();
     	Student st1 = new Student("Pepe", "Pepito", "Agustin delgado 1952", "342-5157224", LocalDate.now(), "@Juancito", "No se es un pibe re loco jajajja sjadalkdjlad alkdjaldasjd laks", EducationLevel.INGRESO);
     	Student st2 = new Student("Juan", "Juancito", "Padilla 5142", "3425155432", LocalDate.now(), "@Ferchomax", "", EducationLevel.INGRESO);
     	Student st3 = new Student("Roberto", "Robertito", "General Paz 1209", "343 3212413", LocalDate.now(), "Jiji", "", EducationLevel.INGRESO);
     	students.addAll(st1, st2, st3);
-		studentTable.setItems(students);	
+		studentTable.setItems(students);
 	}
 	private void setupFields() {
-		nameField.getValidator().constraint("Test", nameField.textProperty().length().greaterThan(0));
-		nameField.getValidator().validProperty().addListener((observable, oldValue, newValue) -> {
-			if (newValue) {
-				System.out.println("SI valida");
-				nameField.pseudoClassStateChanged(PseudoClass.getPseudoClass("invalid"), false);
-			}
-		});
-		nameField.delegateFocusedProperty().addListener((observable, oldValue, newValue) -> {
-			if(oldValue && !newValue) {
-				List<Constraint> constraints = nameField.validate();
-				if(!constraints.isEmpty()) {
-					System.out.println("NO valida");
-					nameField.pseudoClassStateChanged(PseudoClass.getPseudoClass("invalid"), true);
-					
-					//validationLabel
-				}
-			}
-		});
 		edLevelField.setItems(FXCollections.observableArrayList(EducationLevel.values()));
-		/*passwordField.delegateFocusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (oldValue && !newValue) {
-				List<Constraint> constraints = passwordField.validate();
-				if (!constraints.isEmpty()) {
-					passwordField.pseudoClassStateChanged(INVALID_PSEUDO_CLASS, true);
-					validationLabel.setText(constraints.get(0).getMessage());
-					validationLabel.setVisible(true);
-				}
-			}
-		});*/
-		//studentTable.setRowsPerPage(14);
+		edLevelField.selectFirst();
+		ValidatorManager.notNullConstraint(nameField);
+		ValidatorManager.notNullConstraint(surnameField);
 	}
 	private void setupTable() {
 		MFXTableColumn<Student> nameColumn = new MFXTableColumn<>("Nombre", false, Comparator.comparing(Student::getName));
@@ -119,7 +88,6 @@ public class StudentScreenController implements Initializable{
 		MFXTableColumn<Student> socialMediaColumn = new MFXTableColumn<>("Red social", false, Comparator.comparing(Student::getSocialMedia));
 		MFXTableColumn<Student> levelColumn = new MFXTableColumn<>("Nivel", false, Comparator.comparing(Student::getEducationLevel));
 		
-		//MFXTableColumn<Student> descriptionColumn = new MFXTableColumn<>("Descripción", false, Comparator.comparing(Student::getDescription));
 		nameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getName));
 		surnameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getSurname));
 		addressColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getAddress));
@@ -127,8 +95,6 @@ public class StudentScreenController implements Initializable{
 		birthdayColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getBirthday));
 		socialMediaColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getSocialMedia));
 		levelColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getEducationLevelInitial));
-		
-		//descriptionColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getDescription));
 		
 		studentTable.getTableColumns().addAll(nameColumn, surnameColumn, addressColumn, phoneNumberColumn, birthdayColumn, socialMediaColumn, levelColumn);
 
@@ -140,6 +106,7 @@ public class StudentScreenController implements Initializable{
 	
     @FXML
     void addStudent(ActionEvent event) {
+		System.out.println(studentTable.getSelectionModel().getSelectedValues());
     	String name = nameField.getText().trim();
     	String surname = surnameField.getText().trim();
     	String address = addressField.getText().trim();
@@ -148,31 +115,33 @@ public class StudentScreenController implements Initializable{
     	String socialMedia = socialMediaField.getText().trim();
     	String description = descriptionField.getText().trim();
     	EducationLevel lvl = edLevelField.getSelectedItem();
-    	System.out.println("---");
-    	System.out.println(name);
-    	System.out.println(surname);
-    	System.out.println(address);
-    	System.out.println(birthday);
-    	System.out.println(socialMedia);
-    	System.out.println(description);
+    	
     	if(nameField.validate().isEmpty() && surnameField.validate().isEmpty()) {
     		Student newStudent = new Student(name, surname, address, phoneNumber, birthday, socialMedia, description, lvl);
-    		// agregar gestor.
+    		// $ agregar gestor.
+    		
     		students.add(newStudent);
     		// Ventana de se realizó la operacion con exito.
-        	nameField.clear();
+    		nameField.end();
+    		nameField.clear();
+    		//nameField.clear();
         	surnameField.clear();
+        	surnameField.deselect();
         	addressField.clear();
+        	addressField.deselect();
         	phoneNumberField.clear();
-        	birthdayField.clear();
+        	phoneNumberField.deselect();
         	birthdayField.setValue(null);
+        	birthdayField.deselect();
         	socialMediaField.clear();
+        	socialMediaField.deselect();
         	descriptionField.clear();
-        	edLevelField.clearSelection();
+        	descriptionField.deselect();
+        	//edLevelField.selectFirst();
+        	AlertManager.createInformation("Éxito", "El estudiante se ha creado exitosamente", gridPane);
     	}
     	else {
-    		// mensaje de error capaz
-    		System.out.println("Error");
+    		AlertManager.createError("Error" , "Debe completar los campos nombre y apellido", gridPane);
     	}
     }
 
@@ -183,7 +152,8 @@ public class StudentScreenController implements Initializable{
     		Pair<MFXGenericDialog, MFXStageDialog> alert = AlertManager.createWarning("Cuidado", "¿Desea eliminar este estudiante del sistema? Una vez realizado será irrevertible.", gridPane);
     		alert.getKey().addActions(
     				Map.entry(new MFXButton("Confirmar"), e -> {
-    					students.remove(studentTable.getSelectionModel().getSelectedValue());
+    					// $ agregar gestor
+    					students.remove(selectedStudent);
     					alert.getValue().close();
     				}),
     				Map.entry(new MFXButton("Cancelar"), e -> alert.getValue().close())
@@ -191,11 +161,7 @@ public class StudentScreenController implements Initializable{
     		alert.getValue().showDialog();
     	}
     	else {
-    		System.out.println("HOLA");
     		AlertManager.createError("Error", "Debe seleccionar a un estudiante antes de eliminarlo", gridPane);
-    		
-    		//MFXGenericDialogBuilder.toStageDialogBuilder().get().build(error);
-    		//AlertManager.createError("Error", "Debe seleccionar un alumno para borrar");
     	}
     }
 

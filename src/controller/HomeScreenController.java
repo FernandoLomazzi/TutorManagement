@@ -96,6 +96,7 @@ public class HomeScreenController implements Initializable {
 		MFXLoader loader = new MFXLoader();
 		loader.addView(MFXLoaderBean.of("StudentScreen", getClass().getResource("/view/StudentScreen.fxml")).setBeanToNodeMapper(() -> createToggle("fas-user-graduate", "Alumnos")).setDefaultRoot(true).get());
 		loader.addView(MFXLoaderBean.of("TeacherScreen", getClass().getResource("/view/TeacherScreen.fxml")).setBeanToNodeMapper(() -> createToggle("fas-user-tie", "Profesores")).get());
+		loader.addView(MFXLoaderBean.of("SubjectScreen", getClass().getResource("/view/SubjectScreen.fxml")).setBeanToNodeMapper(() -> createToggle("fas-book", "Materias")).get());
 		loader.addView(MFXLoaderBean.of("TESTINGGG2", getClass().getResource("/view/testing2.fxml")).setBeanToNodeMapper(() -> createToggle("fas-user-tie", "asdas")).get());
 		//loader.addView(MFXLoaderBean.of("BUTTONS", loadURL("fxml/Buttons.fxml")).setBeanToNodeMapper(() -> createToggle("fas-circle-dot", "Buttons")).setDefaultRoot(true).get());
 		//loader.addView(MFXLoaderBean.of("CHECKS_RADIOS_TOGGLES", loadURL("fxml/ChecksRadiosToggles.fxml")).setBeanToNodeMapper(() -> createToggle("fas-toggle-on", "Checks, Radios, Toggles")).get());

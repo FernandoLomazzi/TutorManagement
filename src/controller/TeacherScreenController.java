@@ -2,7 +2,9 @@ package controller;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -15,6 +17,7 @@ import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
 import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
 import io.github.palexdev.materialfx.filter.StringFilter;
+import io.github.palexdev.materialfx.utils.others.observables.When;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,8 +26,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
-import model.EducationLevel;
-import model.Student;
 import model.Teacher;
 
 public class TeacherScreenController implements Initializable{
@@ -58,10 +59,11 @@ public class TeacherScreenController implements Initializable{
 		Teacher tch2 = new Teacher("Juan", "Juancito", LocalDate.now(), "Douas");
 		Teacher tch3 = new Teacher("Pedro", "Perez", LocalDate.now(), "");
     	teachers.addAll(tch1, tch2, tch3);
-		teacherTable.setItems(teachers);	
+    	teacherTable.setItems(teachers);
 	}
 	private void setupFields() {
-		// to-do
+		ValidatorManager.notNullConstraint(nameField);
+		ValidatorManager.notNullConstraint(surnameField);
 	}
 	private void setupTable() {
 		MFXTableColumn<Teacher> nameColumn = new MFXTableColumn<>("Nombre", false, Comparator.comparing(Teacher::getName));
@@ -90,16 +92,18 @@ public class TeacherScreenController implements Initializable{
     		Teacher newTeacher = new Teacher(name, surname, birthday, description);
     		// agregar gestor.
     		teachers.add(newTeacher);
-    		// Ventana de se realizó la operacion con exito.
         	nameField.clear();
+        	nameField.deselect();
         	surnameField.clear();
-        	birthdayField.clear();
+        	surnameField.deselect();
         	birthdayField.setValue(null);
+        	birthdayField.deselect();
         	descriptionField.clear();
+        	descriptionField.deselect();
+        	AlertManager.createInformation("Éxito", "El profesor se ha creado exitosamente", gridPane);
     	}
     	else {
-    		// mensaje de error capaz
-    		System.out.println("Error");
+    		AlertManager.createError("Error" , "Debe completar los campos nombre y apellido", gridPane);
     	}
     }
 
@@ -110,7 +114,8 @@ public class TeacherScreenController implements Initializable{
     		Pair<MFXGenericDialog, MFXStageDialog> alert = AlertManager.createWarning("Cuidado", "¿Desea eliminar este profesor del sistema? Una vez realizado será irrevertible.", gridPane);
     		alert.getKey().addActions(
     				Map.entry(new MFXButton("Confirmar"), e -> {
-    					teachers.remove(teacherTable.getSelectionModel().getSelectedValue());
+    					//agregar gestor
+    					teachers.remove(selectedTeacher);
     					alert.getValue().close();
     				}),
     				Map.entry(new MFXButton("Cancelar"), e -> alert.getValue().close())
@@ -118,11 +123,7 @@ public class TeacherScreenController implements Initializable{
     		alert.getValue().showDialog();
     	}
     	else {
-    		System.out.println("HOLA");
     		AlertManager.createError("Error", "Debe seleccionar a un profesor antes de eliminarlo", gridPane);
-    		
-    		//MFXGenericDialogBuilder.toStageDialogBuilder().get().build(error);
-    		//AlertManager.createError("Error", "Debe seleccionar un alumno para borrar");
     	}
     }
 
