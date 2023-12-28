@@ -4,6 +4,7 @@ module TutorManagement {
 	requires transitive javafx.graphics;
 	requires transitive javafx.controls;
 	requires MaterialFX;
+	requires java.sql;
 	opens controller;
     exports application to javafx.graphics;
     exports controller to javafx.fxml;

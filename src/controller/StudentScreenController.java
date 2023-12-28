@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javax.swing.event.DocumentEvent.EventType;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTableColumn;
 import io.github.palexdev.materialfx.controls.MFXTableView;
@@ -29,6 +30,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
+import model.EducationLevel;
 import model.Student;
 
 public class StudentScreenController implements Initializable{
@@ -49,6 +51,8 @@ public class StudentScreenController implements Initializable{
     @FXML
     private MFXTextField nameField;
     @FXML
+    private MFXComboBox<EducationLevel> edLevelField;
+    @FXML
     private MFXTextField socialMediaField;
     @FXML
     private MFXTableView<Student> studentTable;
@@ -68,9 +72,9 @@ public class StudentScreenController implements Initializable{
 			.then((oldValue, newValue) -> studentTable.autosizeColumns())
 			.listen();*/
 		students = FXCollections.observableArrayList();
-    	Student st1 = new Student("Pepe", "Pepito", "Agustin delgado 1952", "342-5157224", LocalDate.now(), "@Juancito", "No se es un pibe re loco jajajja sjadalkdjlad alkdjaldasjd laks");
-    	Student st2 = new Student("Juan", "Juancito", "Padilla 5142", "3425155432", LocalDate.now(), "@Ferchomax", "");
-    	Student st3 = new Student("Roberto", "Robertito", "General Paz 1209", "343 3212413", LocalDate.now(), "Jiji", "");
+    	Student st1 = new Student("Pepe", "Pepito", "Agustin delgado 1952", "342-5157224", LocalDate.now(), "@Juancito", "No se es un pibe re loco jajajja sjadalkdjlad alkdjaldasjd laks", EducationLevel.INGRESO);
+    	Student st2 = new Student("Juan", "Juancito", "Padilla 5142", "3425155432", LocalDate.now(), "@Ferchomax", "", EducationLevel.INGRESO);
+    	Student st3 = new Student("Roberto", "Robertito", "General Paz 1209", "343 3212413", LocalDate.now(), "Jiji", "", EducationLevel.INGRESO);
     	students.addAll(st1, st2, st3);
 		studentTable.setItems(students);	
 	}
@@ -93,6 +97,7 @@ public class StudentScreenController implements Initializable{
 				}
 			}
 		});
+		edLevelField.setItems(FXCollections.observableArrayList(EducationLevel.values()));
 		/*passwordField.delegateFocusedProperty().addListener((observable, oldValue, newValue) -> {
 			if (oldValue && !newValue) {
 				List<Constraint> constraints = passwordField.validate();
@@ -112,6 +117,7 @@ public class StudentScreenController implements Initializable{
 		MFXTableColumn<Student> phoneNumberColumn = new MFXTableColumn<>("Número", false, Comparator.comparing(Student::getPhoneNumber));
 		MFXTableColumn<Student> birthdayColumn = new MFXTableColumn<>("Cumpleaños", false, Comparator.comparing(Student::getBirthday));
 		MFXTableColumn<Student> socialMediaColumn = new MFXTableColumn<>("Red social", false, Comparator.comparing(Student::getSocialMedia));
+		MFXTableColumn<Student> levelColumn = new MFXTableColumn<>("Nivel", false, Comparator.comparing(Student::getEducationLevel));
 		
 		//MFXTableColumn<Student> descriptionColumn = new MFXTableColumn<>("Descripción", false, Comparator.comparing(Student::getDescription));
 		nameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getName));
@@ -120,9 +126,11 @@ public class StudentScreenController implements Initializable{
 		phoneNumberColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getPhoneNumber));
 		birthdayColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getBirthday));
 		socialMediaColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getSocialMedia));
+		levelColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getEducationLevelInitial));
+		
 		//descriptionColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getDescription));
 		
-		studentTable.getTableColumns().addAll(nameColumn, surnameColumn, addressColumn, phoneNumberColumn, birthdayColumn, socialMediaColumn);
+		studentTable.getTableColumns().addAll(nameColumn, surnameColumn, addressColumn, phoneNumberColumn, birthdayColumn, socialMediaColumn, levelColumn);
 
 		studentTable.getFilters().addAll(
 				new StringFilter<>("Nombre", Student::getName),
@@ -139,6 +147,7 @@ public class StudentScreenController implements Initializable{
     	LocalDate birthday = birthdayField.getValue();
     	String socialMedia = socialMediaField.getText().trim();
     	String description = descriptionField.getText().trim();
+    	EducationLevel lvl = edLevelField.getSelectedItem();
     	System.out.println("---");
     	System.out.println(name);
     	System.out.println(surname);
@@ -147,7 +156,7 @@ public class StudentScreenController implements Initializable{
     	System.out.println(socialMedia);
     	System.out.println(description);
     	if(nameField.validate().isEmpty() && surnameField.validate().isEmpty()) {
-    		Student newStudent = new Student(name, surname, address, phoneNumber, birthday, socialMedia, description);
+    		Student newStudent = new Student(name, surname, address, phoneNumber, birthday, socialMedia, description, lvl);
     		// agregar gestor.
     		students.add(newStudent);
     		// Ventana de se realizó la operacion con exito.
@@ -159,6 +168,7 @@ public class StudentScreenController implements Initializable{
         	birthdayField.setValue(null);
         	socialMediaField.clear();
         	descriptionField.clear();
+        	edLevelField.clearSelection();
     	}
     	else {
     		// mensaje de error capaz
