@@ -15,24 +15,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane" hgap="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1042.0" vgap="25.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TeacherScreenController">
+<GridPane fx:id="gridPane" hgap="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1042.0" vgap="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.view.TeacherScreenController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="675.0" minWidth="10.0" percentWidth="75.0" prefWidth="653.0" />
-      <ColumnConstraints />
+      <ColumnConstraints percentWidth="75.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="1.7976931348623157E308" />
-      <RowConstraints maxHeight="-Infinity" />
-      <RowConstraints />
+    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowSpan="7">
+      <StackPane maxHeight="1.7976931348623157E308">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
                <children>
@@ -59,7 +51,7 @@
             </VBox>
          </children>
       </StackPane>
-      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowSpan="7">
+      <StackPane maxHeight="1.7976931348623157E308" GridPane.columnIndex="1">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
                <children>
@@ -75,7 +67,7 @@
                   </MFXTableView>
                   <HBox alignment="TOP_RIGHT">
                      <children>
-                        <MFXButton buttonType="RAISED" text="Crear nueva clase" />
+                        <MFXButton buttonType="RAISED" onAction="#generateReport" text="Generar reporte" />
                      </children>
                   </HBox>
                </children>
@@ -84,6 +76,6 @@
       </StackPane>
    </children>
    <padding>
-      <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+      <Insets bottom="30.0" left="30.0" right="30.0" top="20.0" />
    </padding>
 </GridPane>

@@ -1,4 +1,4 @@
-package controller;
+package controller.view;
 
 import java.net.URL;
 import java.util.List;
@@ -22,6 +22,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
@@ -79,7 +80,7 @@ public class HomeScreenController implements Initializable {
 		});
 
 		initializeLoader();
-
+		
 		ScrollUtils.addSmoothScrolling(scrollPane);
 
 		// The only way to get a fucking smooth image in this shitty framework
@@ -91,32 +92,24 @@ public class HomeScreenController implements Initializable {
 		logo.setClip(clip);
 		logoContainer.getChildren().add(logo);*/
 	}
-
+	public void setContentPane(Pane pane) {
+		contentPane.getChildren().setAll(pane);
+	}
 	private void initializeLoader() {
 		MFXLoader loader = new MFXLoader();
 		loader.addView(MFXLoaderBean.of("StudentScreen", getClass().getResource("/view/StudentScreen.fxml")).setBeanToNodeMapper(() -> createToggle("fas-user-graduate", "Alumnos")).setDefaultRoot(true).get());
 		loader.addView(MFXLoaderBean.of("TeacherScreen", getClass().getResource("/view/TeacherScreen.fxml")).setBeanToNodeMapper(() -> createToggle("fas-user-tie", "Profesores")).get());
 		loader.addView(MFXLoaderBean.of("SubjectScreen", getClass().getResource("/view/SubjectScreen.fxml")).setBeanToNodeMapper(() -> createToggle("fas-book", "Materias")).get());
+		loader.addView(MFXLoaderBean.of("LessonScreen", getClass().getResource("/view/LessonScreen.fxml")).setBeanToNodeMapper(() -> createToggle("fas-users-between-lines", "Clase")).get());
+		loader.addView(MFXLoaderBean.of("StudentReportScreen", getClass().getResource("/view/StudentReportScreen.fxml")).setBeanToNodeMapper(() -> createToggle("fas-chart-bar", "Reporte Alumnos")).get());
 		loader.addView(MFXLoaderBean.of("TESTINGGG2", getClass().getResource("/view/testing2.fxml")).setBeanToNodeMapper(() -> createToggle("fas-user-tie", "asdas")).get());
-		//loader.addView(MFXLoaderBean.of("BUTTONS", loadURL("fxml/Buttons.fxml")).setBeanToNodeMapper(() -> createToggle("fas-circle-dot", "Buttons")).setDefaultRoot(true).get());
-		//loader.addView(MFXLoaderBean.of("CHECKS_RADIOS_TOGGLES", loadURL("fxml/ChecksRadiosToggles.fxml")).setBeanToNodeMapper(() -> createToggle("fas-toggle-on", "Checks, Radios, Toggles")).get());
-		//loader.addView(MFXLoaderBean.of("COMBOS", loadURL("fxml/ComboBoxes.fxml")).setBeanToNodeMapper(() -> createToggle("fas-square-caret-down", "ComboBoxes")).get());
-		//loader.addView(MFXLoaderBean.of("DIALOGS", loadURL("fxml/Dialogs.fxml")).setBeanToNodeMapper(() -> createToggle("fas-comments", "Dialogs")).setControllerFactory(c -> new DialogsController(stage)).get());
-		//loader.addView(MFXLoaderBean.of("TEXT-FIELDS", loadURL("fxml/TextFields.fxml")).setBeanToNodeMapper(() -> createToggle("fas-italic", "Fields")).get());
-		//loader.addView(MFXLoaderBean.of("LISTS", loadURL("fxml/ListViews.fxml")).setBeanToNodeMapper(() -> createToggle("fas-rectangle-list", "Lists")).get());
-		//loader.addView(MFXLoaderBean.of("NOTIFICATIONS", loadURL("fxml/Notifications.fxml")).setBeanToNodeMapper(() -> createToggle("fas-bell", "Notifications")).setControllerFactory(c -> new NotificationsController(stage)).get());
-		//loader.addView(MFXLoaderBean.of("PICKERS", loadURL("fxml/Pickers.fxml")).setBeanToNodeMapper(() -> createToggle("fas-calendar", "Pickers")).get());
-		//loader.addView(MFXLoaderBean.of("PROGRESS", loadURL("fxml/Progress.fxml")).setBeanToNodeMapper(() -> createToggle("fas-bars-progress", "Progress")).get());
-		//loader.addView(MFXLoaderBean.of("SCROLL-PANES", loadURL("fxml/ScrollPanes.fxml")).setBeanToNodeMapper(() -> createToggle("fas-bars-progress", "Scroll Panes", 90)).get());
-		//loader.addView(MFXLoaderBean.of("SLIDERS", loadURL("fxml/Sliders.fxml")).setBeanToNodeMapper(() -> createToggle("fas-sliders", "Sliders")).get());
-		//loader.addView(MFXLoaderBean.of("STEPPER", loadURL("fxml/Stepper.fxml")).setBeanToNodeMapper(() -> createToggle("fas-stairs", "Stepper")).get());
-		//loader.addView(MFXLoaderBean.of("TABLES", loadURL("fxml/TableViews.fxml")).setBeanToNodeMapper(() -> createToggle("fas-table", "Tables")).get());
-		//loader.addView(MFXLoaderBean.of("FONT-RESOURCES", loadURL("fxml/FontResources.fxml")).setBeanToNodeMapper(() -> createToggle("fas-icons", "Font Resources")).get());
 		loader.setOnLoadedAction(beans -> {
 			List<ToggleButton> nodes = beans.stream()
 					.map(bean -> {
 						ToggleButton toggle = (ToggleButton) bean.getBeanToNodeMapper().get();
-						toggle.setOnAction(event -> contentPane.getChildren().setAll(bean.getRoot()));
+						toggle.setOnAction(event -> {
+							contentPane.getChildren().setAll(bean.getRoot());
+						});
 						if (bean.isDefaultView()) {
 							contentPane.getChildren().setAll(bean.getRoot());
 							toggle.setSelected(true);

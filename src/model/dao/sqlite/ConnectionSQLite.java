@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ConnectionSQLite {
-	private static String url = "jdbc:sqlite:src/database.db"; 
+	private static String url = "jdbc:sqlite:src/database.db?foreign_keys=on"; 
 	public static Connection connect() {
 		Connection conn = null;
 		try {

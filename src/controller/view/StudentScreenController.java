@@ -1,12 +1,17 @@
-package controller;
+package controller.view;
 
+import java.io.IOException;
 import java.net.URL;
+import java.text.MessageFormat;
+import java.text.ParsePosition;
 import java.time.LocalDate;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import controller.AlertManager;
+import controller.ValidatorManager;
+import controller.model.StudentController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
@@ -16,17 +21,20 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
 import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
+import io.github.palexdev.materialfx.filter.EnumFilter;
 import io.github.palexdev.materialfx.filter.StringFilter;
 import io.github.palexdev.materialfx.utils.others.observables.When;
-import io.github.palexdev.materialfx.validation.Constraint;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.util.Pair;
 import model.EducationLevel;
 import model.Student;
@@ -56,8 +64,10 @@ public class StudentScreenController implements Initializable{
     private MFXTableView<Student> studentTable;
     @FXML
     private MFXTextField surnameField;
+    @FXML
+    private MFXButton reportButton;
     
-    private ObservableList<Student> students;
+    public static ObservableList<Student> students;
 	
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -66,12 +76,9 @@ public class StudentScreenController implements Initializable{
 		studentTable.autosizeColumnsOnInitialization();
 		When.onChanged(studentTable.tableRowFactoryProperty())
 			.then((o, n) -> studentTable.autosizeColumns()).listen();
-		students = FXCollections.observableArrayList();
-    	Student st1 = new Student("Pepe", "Pepito", "Agustin delgado 1952", "342-5157224", LocalDate.now(), "@Juancito", "No se es un pibe re loco jajajja sjadalkdjlad alkdjaldasjd laks", EducationLevel.INGRESO);
-    	Student st2 = new Student("Juan", "Juancito", "Padilla 5142", "3425155432", LocalDate.now(), "@Ferchomax", "", EducationLevel.INGRESO);
-    	Student st3 = new Student("Roberto", "Robertito", "General Paz 1209", "343 3212413", LocalDate.now(), "Jiji", "", EducationLevel.INGRESO);
-    	students.addAll(st1, st2, st3);
-		studentTable.setItems(students);
+		StudentController studentController = StudentController.getInstance();
+		students = FXCollections.observableArrayList(studentController.getAllStudents());    	
+    	studentTable.setItems(students);
 	}
 	private void setupFields() {
 		edLevelField.setItems(FXCollections.observableArrayList(EducationLevel.values()));
@@ -100,13 +107,24 @@ public class StudentScreenController implements Initializable{
 
 		studentTable.getFilters().addAll(
 				new StringFilter<>("Nombre", Student::getName),
-				new StringFilter<>("Apellido", Student::getSurname)
+				new StringFilter<>("Apellido", Student::getSurname),
+				new EnumFilter<>("Nivel", Student::getEducationLevel, EducationLevel.class)
 		);
 	}
 	
     @FXML
+    void generateReport(ActionEvent event) {
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/StudentReportScreen.fxml"));
+		try {
+			Pane root = loader.load();
+			((StackPane) gridPane.getParent()).getChildren().setAll(root);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+
+    @FXML
     void addStudent(ActionEvent event) {
-		System.out.println(studentTable.getSelectionModel().getSelectedValues());
     	String name = nameField.getText().trim();
     	String surname = surnameField.getText().trim();
     	String address = addressField.getText().trim();
@@ -116,15 +134,14 @@ public class StudentScreenController implements Initializable{
     	String description = descriptionField.getText().trim();
     	EducationLevel lvl = edLevelField.getSelectedItem();
     	
-    	if(nameField.validate().isEmpty() && surnameField.validate().isEmpty()) {
-    		Student newStudent = new Student(name, surname, address, phoneNumber, birthday, socialMedia, description, lvl);
-    		// $ agregar gestor.
-    		
+    	if(nameField.validate().isEmpty() && surnameField.validate().isEmpty() && lvl!=null) {
+    		StudentController studentController = StudentController.getInstance();
+    		//try - catch
+    		Student newStudent = studentController.createStudent(name, surname, address, phoneNumber, birthday, socialMedia, description, lvl);    		
     		students.add(newStudent);
-    		// Ventana de se realizó la operacion con exito.
-    		nameField.end();
+    		
     		nameField.clear();
-    		//nameField.clear();
+    		nameField.deselect();
         	surnameField.clear();
         	surnameField.deselect();
         	addressField.clear();
@@ -152,7 +169,8 @@ public class StudentScreenController implements Initializable{
     		Pair<MFXGenericDialog, MFXStageDialog> alert = AlertManager.createWarning("Cuidado", "¿Desea eliminar este estudiante del sistema? Una vez realizado será irrevertible.", gridPane);
     		alert.getKey().addActions(
     				Map.entry(new MFXButton("Confirmar"), e -> {
-    					// $ agregar gestor
+    					StudentController studentController = StudentController.getInstance();
+    					studentController.deleteStudent(selectedStudent);
     					students.remove(selectedStudent);
     					alert.getValue().close();
     				}),

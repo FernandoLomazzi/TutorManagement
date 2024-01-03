@@ -1,13 +1,15 @@
-package controller;
+package controller.view;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import controller.AlertManager;
+import controller.ValidatorManager;
+import controller.model.TeacherController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTableColumn;
@@ -22,9 +24,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.util.Pair;
 import model.Teacher;
 
@@ -46,19 +51,17 @@ public class TeacherScreenController implements Initializable{
     @FXML
     private MFXTableView<Teacher> teacherTable;
 
-    private ObservableList<Teacher> teachers;
+    public static ObservableList<Teacher> teachers;
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
     	setupFields();
 		setupTable();		
 		teacherTable.autosizeColumnsOnInitialization();
-		
-		teachers = FXCollections.observableArrayList();
-		Teacher tch1 = new Teacher("Pepe", "Pepito", LocalDate.now(), "Hola que tal");
-		Teacher tch2 = new Teacher("Juan", "Juancito", LocalDate.now(), "Douas");
-		Teacher tch3 = new Teacher("Pedro", "Perez", LocalDate.now(), "");
-    	teachers.addAll(tch1, tch2, tch3);
+		When.onChanged(teacherTable.tableRowFactoryProperty())
+			.then((o, n) -> teacherTable.autosizeColumns()).listen();
+		TeacherController teacherController = TeacherController.getInstance();
+		teachers = FXCollections.observableArrayList(teacherController.getAllTeachers());
     	teacherTable.setItems(teachers);
 	}
 	private void setupFields() {
@@ -82,6 +85,17 @@ public class TeacherScreenController implements Initializable{
 		);
 	}
 	
+	@FXML
+	void generateReport(ActionEvent event) {
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/TeacherReportScreen.fxml"));
+		try {
+			Pane root = loader.load();
+			((StackPane) gridPane.getParent()).getChildren().setAll(root);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
     @FXML
     void addTeacher(ActionEvent event) {
     	String name = nameField.getText().trim();
@@ -89,8 +103,8 @@ public class TeacherScreenController implements Initializable{
     	LocalDate birthday = birthdayField.getValue();
     	String description = descriptionField.getText().trim();
     	if(nameField.validate().isEmpty() && surnameField.validate().isEmpty()) {
-    		Teacher newTeacher = new Teacher(name, surname, birthday, description);
-    		// agregar gestor.
+    		TeacherController teacherController = TeacherController.getInstance();
+    		Teacher newTeacher = teacherController.createTeacher(name, surname, birthday, description);
     		teachers.add(newTeacher);
         	nameField.clear();
         	nameField.deselect();
@@ -114,7 +128,8 @@ public class TeacherScreenController implements Initializable{
     		Pair<MFXGenericDialog, MFXStageDialog> alert = AlertManager.createWarning("Cuidado", "¿Desea eliminar este profesor del sistema? Una vez realizado será irrevertible.", gridPane);
     		alert.getKey().addActions(
     				Map.entry(new MFXButton("Confirmar"), e -> {
-    					//agregar gestor
+    		    		TeacherController teacherController = TeacherController.getInstance();
+    		    		teacherController.deleteTeacher(selectedTeacher);
     					teachers.remove(selectedTeacher);
     					alert.getValue().close();
     				}),

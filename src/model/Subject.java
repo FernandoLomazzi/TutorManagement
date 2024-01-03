@@ -1,6 +1,9 @@
 package model;
 
+import java.util.List;
+
 public class Subject {
+	//public static List<Subject> subjects;
 	private String name;
 	private Institution institution;
 	public Subject(String name, Institution institution) {
@@ -15,5 +18,9 @@ public class Subject {
 	}
 	public String getInstitutionString() {
 		return institution.toString();
+	}
+	@Override
+	public String toString() {
+		return name + " (" + institution.toString() + ")";
 	}
 }

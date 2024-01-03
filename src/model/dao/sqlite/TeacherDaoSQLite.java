@@ -8,9 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Student;
 import model.Teacher;
-import model.dao.StudentDao;
 import model.dao.TeacherDao;
 
 public class TeacherDaoSQLite implements TeacherDao{

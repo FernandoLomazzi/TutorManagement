@@ -10,6 +10,7 @@ public class Teacher {
 	private LocalDate birthday;
 	private String description;
 	private List<Commission> commissions;
+	
 	public Teacher(String name, String surname, LocalDate birthday, String description) {
 		this.name = name;
 		this.surname = surname;
@@ -27,6 +28,10 @@ public class Teacher {
 	}
 	public String getDescription() {
 		return description;
+	}
+	@Override
+	public String toString() {
+		return name+" "+surname;
 	}
 	/*
 	public List<Lesson> getLessons(){

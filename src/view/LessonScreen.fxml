@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode?>
+<?import io.github.palexdev.materialfx.controls.MFXTableView?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.view.LessonScreenController">
+   <center>
+      <StackPane>
+         <children>
+            <VBox spacing="20.0" StackPane.alignment="TOP_CENTER">
+               <children>
+                  <Label maxWidth="1.7976931348623157E308" text="Crear nueva clase">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <HBox spacing="20.0">
+                     <children>
+                        <MFXFilterComboBox fx:id="subjectField" floatMode="BORDER" floatingText="Materia" maxWidth="-Infinity" prefWidth="200.0" />
+                        <MFXTextField fx:id="pricePerHourField" floatMode="BORDER" floatingText="Precio por hora" prefWidth="115.0" />
+                        <MFXTextField fx:id="totalHoursField" floatMode="BORDER" floatingText="Cantidad de horas" prefWidth="115.0" />
+                        <MFXDatePicker fx:id="dateField" floatMode="BORDER" floatingText="Día" prefWidth="200.0" />
+                     </children>
+                  </HBox>
+                  <HBox spacing="20.0">
+                     <children>
+                        <MFXFilterComboBox fx:id="teacherField" floatMode="BORDER" floatingText="Profesor" maxWidth="-Infinity" prefWidth="200.0" />
+                        <MFXTextField fx:id="pricePerHourTeacherField" floatMode="BORDER" floatingText="Precio por hora" prefWidth="115.0" />
+                        <MFXRectangleToggleNode fx:id="teacherPaidToggle" maxHeight="1.7976931348623157E308" prefWidth="115.0" text="Pagado" />
+                     </children>
+                  </HBox>
+                  <Label text="Alumnos">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <MFXTableView fx:id="studentTable" footerVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="373.0" prefWidth="464.0" VBox.vgrow="ALWAYS" />
+                  <HBox alignment="TOP_RIGHT" maxWidth="1.7976931348623157E308" spacing="20.0">
+                     <children>
+                        <MFXButton fx:id="createButton" buttonType="RAISED" onAction="#createLesson" text="Agregar" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+   </center>
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="20.0" />
+   </padding>
+</BorderPane>

@@ -1,6 +1,8 @@
 package application;
 	
-import controller.HomeScreenController;
+import java.text.MessageFormat;
+
+import controller.view.HomeScreenController;
 import io.github.palexdev.materialfx.theming.JavaFXThemes;
 import io.github.palexdev.materialfx.theming.MaterialFXStylesheets;
 import io.github.palexdev.materialfx.theming.UserAgentBuilder;
@@ -28,13 +30,14 @@ public class Main extends Application {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/HomeScreen.fxml"));
 			loader.setControllerFactory(c -> new HomeScreenController(primaryStage));
 			Pane root = loader.load();
-
+			
 			Scene scene = new Scene(root);
 			scene.setFill(Color.TRANSPARENT);
-			primaryStage.initStyle(StageStyle.TRANSPARENT);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			primaryStage.initStyle(StageStyle.TRANSPARENT);
 			primaryStage.setScene(scene);
 			primaryStage.show();
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -2,7 +2,15 @@ To do:
 	- Make css
 	- Table filters language
 	- Resize column to use all space
-	- Add NN to education_level in db
+	- check not nulls consistency
+	- Improve scrolling
+	- add logos to columns (graphics)
+	- check null in date pickers
+	- check catchs
+	- Teacher birthday notnull in controller
+	- Make columns resizable
+	- add notified to db
+	- make alert close before code
 Issues:
 	- Table could exceed screen
 	- Floating label stills up after adding student/teacher

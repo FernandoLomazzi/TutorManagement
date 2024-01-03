@@ -15,7 +15,6 @@ public class Student {
 	private EducationLevel lvl;
 	private List<Payment> payments;
 	
-	
 	public Student() {
 		;
 	}

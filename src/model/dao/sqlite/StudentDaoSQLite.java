@@ -1,20 +1,101 @@
 package model.dao.sqlite;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.EducationLevel;
 import model.Student;
+import model.StudentReport;
 import model.dao.StudentDao;
 
 public class StudentDaoSQLite implements StudentDao {
+	@Override
+	public Map<String, List<StudentReport>> getUnpaidStudents() {
+		Map<String, List<StudentReport>> studentsReport = new HashMap<>();
+		String statement = "SELECT\r\n"
+				+ "    Student.name,\r\n"
+				+ "    Student.surname,\r\n"
+				+ "    Lesson.id, \r\n"
+				+ "    Lesson.total_hours,\r\n"
+				+ "    Lesson.day,\r\n"
+				+ "    Lesson.price_per_hour,\r\n"
+				+ "    Teacher.name,\r\n"
+				+ "    Teacher.surname,\r\n"
+				+ "    Subject.name,\r\n"
+				+ "    Institution.name\r\n"
+				+ "FROM\r\n"
+				+ "    Payment\r\n"
+				+ "INNER JOIN\r\n"
+				+ "    Student ON Student.id = Payment.id_student\r\n"
+				+ "INNER JOIN\r\n"
+				+ "    Lesson ON Payment.id_lesson = Lesson.id\r\n"
+				+ "INNER JOIN\r\n"
+				+ "    Subject ON Lesson.id_subject = Subject.id\r\n"
+				+ "INNER JOIN\r\n"
+				+ "    Institution ON Subject.id_institution = Institution.id\r\n"
+				+ "INNER JOIN\r\n"
+				+ "    Commission ON Lesson.id = Commission.id_lesson\r\n"
+				+ "INNER JOIN\r\n"
+				+ "    Teacher ON Commission.id_teacher = Teacher.id\r\n"
+				+ "WHERE Payment.paid=0;";
+		Connection conn = ConnectionSQLite.connect();
+		try {
+			PreparedStatement st = conn.prepareStatement(statement);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				String studentName, studentSurname;
+				
+				Integer lessonTotalHours, lessonID;
+				LocalDate lessonDay;
+				Double lessonPricePerHour;
+				
+				String teacherName, teacherSurname;
+				
+				String subjectName;
+				String instName;
+				
+				studentName = rs.getString(1);
+				studentSurname = rs.getString(2);
+				lessonID = rs.getInt(3);
+				lessonTotalHours = rs.getInt(4);
+				lessonDay = DateParserSQLite.parseString(rs.getString(5));
+				lessonPricePerHour = rs.getDouble(6);
+				teacherName = rs.getString(7);
+				teacherSurname = rs.getString(8);
+				subjectName = rs.getString(9);
+				instName = rs.getString(10);
+				StudentReport studentReport = new StudentReport(lessonID, studentName, studentSurname, 
+						teacherName, teacherSurname, subjectName, instName, lessonDay, lessonTotalHours, lessonPricePerHour);
+				String studentCompleteName = studentName + " " + studentSurname;
+				if(studentsReport.containsKey(studentCompleteName)) {
+					studentsReport.get(studentCompleteName).add(studentReport);
+				}
+				else {
+					List<StudentReport> l = new ArrayList<>();
+					l.add(studentReport);
+					studentsReport.put(studentCompleteName, l);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println(studentsReport);
+		
+		return studentsReport;
+	}
 	@Override
 	public void createStudent(Student student) {
 		String statement = "INSERT INTO Student (name, surname, address, phone_number, birthday, social_media, description, education_level) VALUES (?,?,?,?,?,?,?,?)";

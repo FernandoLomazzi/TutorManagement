@@ -1,6 +1,6 @@
 package model;
 
-public enum ClassState {
+public enum LessonState {
 	UNPAID,
 	STUDENTUNPAID,
 	TEACHERUNPAID,
