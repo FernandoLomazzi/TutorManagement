@@ -1,6 +1,5 @@
 To do:
 	- Make css
-	- Table filters language
 	- Resize column to use all space
 	- check not nulls consistency
 	- Improve scrolling
@@ -8,8 +7,6 @@ To do:
 	- check null in date pickers
 	- check catchs
 	- Teacher birthday notnull in controller
-	- Make columns resizable
-	- add notified to db
 	- make alert close before code
 Issues:
 	- Table could exceed screen

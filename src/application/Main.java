@@ -3,6 +3,8 @@ package application;
 import java.text.MessageFormat;
 
 import controller.view.HomeScreenController;
+import io.github.palexdev.materialfx.i18n.I18N;
+import io.github.palexdev.materialfx.i18n.Language;
 import io.github.palexdev.materialfx.theming.JavaFXThemes;
 import io.github.palexdev.materialfx.theming.MaterialFXStylesheets;
 import io.github.palexdev.materialfx.theming.UserAgentBuilder;
@@ -25,7 +27,7 @@ public class Main extends Application {
 			.setResolveAssets(true)
 			.build()
 			.setGlobal();
-		
+		I18N.setLanguage(Language.SPANISH);
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/HomeScreen.fxml"));
 			loader.setControllerFactory(c -> new HomeScreenController(primaryStage));

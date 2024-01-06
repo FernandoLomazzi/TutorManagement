@@ -8,12 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import controller.AlertManager;
-import controller.ValidatorManager;
 import controller.model.LessonController;
-import controller.model.StudentController;
-import controller.model.SubjectController;
-import controller.model.TeacherController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
@@ -26,7 +21,6 @@ import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
 import io.github.palexdev.materialfx.filter.EnumFilter;
 import io.github.palexdev.materialfx.filter.StringFilter;
 import io.github.palexdev.materialfx.utils.others.observables.When;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,6 +34,8 @@ import model.Payment;
 import model.Student;
 import model.Subject;
 import model.Teacher;
+import utils.AlertManager;
+import utils.ValidatorManager;
 
 public class LessonScreenController implements Initializable{
     @FXML
@@ -90,9 +86,9 @@ public class LessonScreenController implements Initializable{
 		ValidatorManager.notNullConstraint(totalHoursField);	
 	}
 	private void setupTable() {
-		MFXTableColumn<Student> nameColumn = new MFXTableColumn<>("Nombre", false, Comparator.comparing(Student::getName));
-		MFXTableColumn<Student> surnameColumn = new MFXTableColumn<>("Apellido", false, Comparator.comparing(Student::getSurname));
-		MFXTableColumn<Student> levelColumn = new MFXTableColumn<>("Nivel", false, Comparator.comparing(Student::getEducationLevel));
+		MFXTableColumn<Student> nameColumn = new MFXTableColumn<>("Nombre", true, Comparator.comparing(Student::getName));
+		MFXTableColumn<Student> surnameColumn = new MFXTableColumn<>("Apellido", true, Comparator.comparing(Student::getSurname));
+		MFXTableColumn<Student> levelColumn = new MFXTableColumn<>("Nivel", true, Comparator.comparing(Student::getEducationLevel));
 		MFXTableColumn<Student> selectionColumn = new MFXTableColumn<>("Seleccionar", false);
 		MFXTableColumn<Student> paidColumn = new MFXTableColumn<>("Pagado", false);
 		
@@ -105,14 +101,14 @@ public class LessonScreenController implements Initializable{
 			MFXCheckbox selectedCheck = new MFXCheckbox();
 			selectedCheck.setContentDisposition(ContentDisplay.GRAPHIC_ONLY);
 			rc.setLeadingGraphic(selectedCheck);
-			return rc;	
+			return rc;
 		});
 		paidColumn.setRowCellFactory(device -> {
 			MFXTableRowCell rc = new MFXTableRowCell<>(null, s -> "");
 			MFXCheckbox paidCheck = new MFXCheckbox();
 			paidCheck.setContentDisposition(ContentDisplay.GRAPHIC_ONLY);
 			rc.setLeadingGraphic(paidCheck);
-			return rc;			
+			return rc;
 		});
 		
 		studentTable.getTableColumns().addAll(nameColumn, surnameColumn, levelColumn, selectionColumn, paidColumn);

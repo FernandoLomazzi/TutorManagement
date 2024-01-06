@@ -12,7 +12,7 @@ import model.dao.LessonDao;
 
 public class LessonDaoSQLite implements LessonDao{
 	public void setNotified(StudentReport student, Boolean notified) {
-		String statement = "UPDATE Payment SET Payment.is_notified=? WHERE Payment.id_student="
+		String statement = "UPDATE Payment SET is_notified=? WHERE Payment.id_student="
 				+ "(SELECT id FROM Student WHERE Student.name=? AND Student.surname=?) AND Payment.id_lesson=?";
 		Connection conn = ConnectionSQLite.connect();
 		try {

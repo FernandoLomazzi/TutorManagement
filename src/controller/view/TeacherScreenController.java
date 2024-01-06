@@ -7,8 +7,6 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import controller.AlertManager;
-import controller.ValidatorManager;
 import controller.model.TeacherController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
@@ -32,6 +30,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Pair;
 import model.Teacher;
+import utils.AlertManager;
+import utils.MaterialFXManager;
+import utils.ValidatorManager;
 
 public class TeacherScreenController implements Initializable{
     @FXML
@@ -56,7 +57,7 @@ public class TeacherScreenController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
     	setupFields();
-		setupTable();		
+		setupTable();
 		teacherTable.autosizeColumnsOnInitialization();
 		When.onChanged(teacherTable.tableRowFactoryProperty())
 			.then((o, n) -> teacherTable.autosizeColumns()).listen();
@@ -67,11 +68,12 @@ public class TeacherScreenController implements Initializable{
 	private void setupFields() {
 		ValidatorManager.notNullConstraint(nameField);
 		ValidatorManager.notNullConstraint(surnameField);
+		ValidatorManager.notNullConstraint(birthdayField);
 	}
 	private void setupTable() {
-		MFXTableColumn<Teacher> nameColumn = new MFXTableColumn<>("Nombre", false, Comparator.comparing(Teacher::getName));
-		MFXTableColumn<Teacher> surnameColumn = new MFXTableColumn<>("Apellido", false, Comparator.comparing(Teacher::getSurname));
-		MFXTableColumn<Teacher> birthdayColumn = new MFXTableColumn<>("Cumpleaños", false, Comparator.comparing(Teacher::getBirthday));
+		MFXTableColumn<Teacher> nameColumn = new MFXTableColumn<>("Nombre", true, Comparator.comparing(Teacher::getName));
+		MFXTableColumn<Teacher> surnameColumn = new MFXTableColumn<>("Apellido", true, Comparator.comparing(Teacher::getSurname));
+		MFXTableColumn<Teacher> birthdayColumn = new MFXTableColumn<>("Cumpleaños", true, Comparator.comparing(Teacher::getBirthday));
 		
 		nameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Teacher::getName));
 		surnameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Teacher::getSurname));
@@ -96,24 +98,21 @@ public class TeacherScreenController implements Initializable{
 		}
 	}
 	
+	private Boolean checkFieldContraints() {
+		return nameField.isValid() && surnameField.isValid() && birthdayField.isValid();
+	}
     @FXML
     void addTeacher(ActionEvent event) {
     	String name = nameField.getText().trim();
     	String surname = surnameField.getText().trim();
     	LocalDate birthday = birthdayField.getValue();
     	String description = descriptionField.getText().trim();
-    	if(nameField.validate().isEmpty() && surnameField.validate().isEmpty()) {
+    	if(checkFieldContraints()) {
     		TeacherController teacherController = TeacherController.getInstance();
     		Teacher newTeacher = teacherController.createTeacher(name, surname, birthday, description);
     		teachers.add(newTeacher);
-        	nameField.clear();
-        	nameField.deselect();
-        	surnameField.clear();
-        	surnameField.deselect();
-        	birthdayField.setValue(null);
-        	birthdayField.deselect();
+    		MaterialFXManager.clearAllFields(nameField, surnameField, birthdayField);
         	descriptionField.clear();
-        	descriptionField.deselect();
         	AlertManager.createInformation("Éxito", "El profesor se ha creado exitosamente", gridPane);
     	}
     	else {
@@ -128,10 +127,10 @@ public class TeacherScreenController implements Initializable{
     		Pair<MFXGenericDialog, MFXStageDialog> alert = AlertManager.createWarning("Cuidado", "¿Desea eliminar este profesor del sistema? Una vez realizado será irrevertible.", gridPane);
     		alert.getKey().addActions(
     				Map.entry(new MFXButton("Confirmar"), e -> {
+    					alert.getValue().close();
     		    		TeacherController teacherController = TeacherController.getInstance();
     		    		teacherController.deleteTeacher(selectedTeacher);
     					teachers.remove(selectedTeacher);
-    					alert.getValue().close();
     				}),
     				Map.entry(new MFXButton("Cancelar"), e -> alert.getValue().close())
     		);
@@ -141,5 +140,4 @@ public class TeacherScreenController implements Initializable{
     		AlertManager.createError("Error", "Debe seleccionar a un profesor antes de eliminarlo", gridPane);
     	}
     }
-
 }

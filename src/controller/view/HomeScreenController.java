@@ -101,8 +101,8 @@ public class HomeScreenController implements Initializable {
 		loader.addView(MFXLoaderBean.of("TeacherScreen", getClass().getResource("/view/TeacherScreen.fxml")).setBeanToNodeMapper(() -> createToggle("fas-user-tie", "Profesores")).get());
 		loader.addView(MFXLoaderBean.of("SubjectScreen", getClass().getResource("/view/SubjectScreen.fxml")).setBeanToNodeMapper(() -> createToggle("fas-book", "Materias")).get());
 		loader.addView(MFXLoaderBean.of("LessonScreen", getClass().getResource("/view/LessonScreen.fxml")).setBeanToNodeMapper(() -> createToggle("fas-users-between-lines", "Clase")).get());
-		loader.addView(MFXLoaderBean.of("StudentReportScreen", getClass().getResource("/view/StudentReportScreen.fxml")).setBeanToNodeMapper(() -> createToggle("fas-chart-bar", "Reporte Alumnos")).get());
-		loader.addView(MFXLoaderBean.of("TESTINGGG2", getClass().getResource("/view/testing2.fxml")).setBeanToNodeMapper(() -> createToggle("fas-user-tie", "asdas")).get());
+		//loader.addView(MFXLoaderBean.of("StudentReportScreen", getClass().getResource("/view/StudentReportScreen.fxml")).setBeanToNodeMapper(() -> createToggle("fas-chart-bar", "Reporte Alumnos")).get());
+		//loader.addView(MFXLoaderBean.of("TESTINGGG2", getClass().getResource("/view/testing2.fxml")).setBeanToNodeMapper(() -> createToggle("fas-user-tie", "asdas")).get());
 		loader.setOnLoadedAction(beans -> {
 			List<ToggleButton> nodes = beans.stream()
 					.map(bean -> {

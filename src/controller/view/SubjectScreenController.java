@@ -5,8 +5,6 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import controller.AlertManager;
-import controller.ValidatorManager;
 import controller.model.InstitutionController;
 import controller.model.SubjectController;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -28,6 +26,9 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
 import model.Institution;
 import model.Subject;
+import utils.AlertManager;
+import utils.MaterialFXManager;
+import utils.ValidatorManager;
 
 public class SubjectScreenController implements Initializable {
 	@FXML
@@ -68,11 +69,7 @@ public class SubjectScreenController implements Initializable {
 		subTable.autosizeColumnsOnInitialization();
 		instTable.autosizeColumnsOnInitialization();
 		When.onChanged(subTable.tableRowFactoryProperty()).then((o, n) -> subTable.autosizeColumns()).listen();
-		When.onChanged(instTable.tableRowFactoryProperty()).then((o, n) -> {
-			instTable.autosizeColumns();
-			System.out.println("AAA " + o + " " + n);
-		}).listen();
-		
+		When.onChanged(instTable.tableRowFactoryProperty()).then((o, n) -> instTable.autosizeColumns()).listen();
 	}
 	private void setupFields() {			
 		ValidatorManager.notNullConstraint(instNameField);
@@ -81,8 +78,8 @@ public class SubjectScreenController implements Initializable {
 	}
 	private void setupTable() {
 		MFXTableColumn<Institution> instNameColumn = new MFXTableColumn<>("Nombre", true, Comparator.comparing(Institution::getName));
-		MFXTableColumn<Subject> subNameColumn = new MFXTableColumn<>("Nombre", false, Comparator.comparing(Subject::getName));
-		MFXTableColumn<Subject> subInstColumn = new MFXTableColumn<>("Institución", false, Comparator.comparing(Subject::getInstitutionString));
+		MFXTableColumn<Subject> subNameColumn = new MFXTableColumn<>("Nombre", true, Comparator.comparing(Subject::getName));
+		MFXTableColumn<Subject> subInstColumn = new MFXTableColumn<>("Institución", true, Comparator.comparing(Subject::getInstitutionString));
 		instNameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Institution::getName));
 		subNameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Subject::getName));
 		subInstColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Subject::getInstitution));
@@ -105,8 +102,8 @@ public class SubjectScreenController implements Initializable {
     		InstitutionController institutionController = InstitutionController.getInstance();
     		Institution newInst = institutionController.createInstitution(name);
     		institutions.add(newInst);
-        	instNameField.clear();    		
-        	instNameField.deselect();
+    		
+        	MaterialFXManager.clearAllFields(instNameField);
         	
         	AlertManager.createInformation("Éxito", "La institución se ha creado exitosamente", gridPane);
     	}
@@ -144,9 +141,9 @@ public class SubjectScreenController implements Initializable {
     		SubjectController subjectController = SubjectController.getInstance();
     		Subject subject = subjectController.createSubject(name, inst);
     		subjects.add(subject);
-        	subNameField.clear();
-        	subNameField.deselect();
-        	//subInstField.clearSelection();
+
+        	MaterialFXManager.clearAllFields(subNameField);
+        	
         	AlertManager.createInformation("Éxito", "La materia se ha creado exitosamente", gridPane);
     	}
     	else {

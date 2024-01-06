@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import controller.AlertManager;
 import controller.model.LessonController;
 import controller.model.StudentController;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -20,6 +19,7 @@ import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
 import io.github.palexdev.materialfx.filter.DoubleFilter;
 import io.github.palexdev.materialfx.filter.IntegerFilter;
 import io.github.palexdev.materialfx.filter.StringFilter;
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -35,10 +35,12 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import model.StudentReport;
+import utils.AlertManager;
 
 public class StudentReportScreenController implements Initializable{
 	@FXML
@@ -60,14 +62,16 @@ public class StudentReportScreenController implements Initializable{
 		students.forEach((student, studentReport) -> {
 			ObservableList<StudentReport> studentItems = FXCollections.observableArrayList(studentReport);
 			VBox vBoxInternal = new VBox(20);
-			HBox hBox = new HBox(20);
+			vBoxInternal.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 			//add icon on hbox
+			HBox hBox = new HBox(20);
+			System.out.println(hBox.getPrefHeight() + " " + hBox.getPrefWidth());
 			hBox.getChildren().add(new Label(student));
 			MFXTableView<StudentReport> table = new  MFXTableView<>();
 			table.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+			VBox.setVgrow(table, Priority.ALWAYS);
 			table.setFooterVisible(false);
 			table.autosizeColumnsOnInitialization();
-			//MFXTableColumn<StudentReport> studentColumn = new MFXTableColumn<>("Nombre", false, Comparator.comparing(Student::getName));
 			MFXTableColumn<StudentReport> totalHoursColumn = new MFXTableColumn<>("Horas", true, Comparator.comparing(StudentReport::getTotalHours));
 			MFXTableColumn<StudentReport> dayColumn = new MFXTableColumn<>("Día", true, Comparator.comparing(StudentReport::getDay));
 			MFXTableColumn<StudentReport> teacherColumn = new MFXTableColumn<>("Profesor", true, Comparator.comparing(StudentReport::getTeacherCompleteName));
@@ -86,24 +90,15 @@ public class StudentReportScreenController implements Initializable{
 			notifiedColumn.setRowCellFactory(device -> {
 				MFXTableRowCell rc = new MFXTableRowCell<>(null, s->"");
 				MFXCheckbox selectedCheck = new MFXCheckbox();
+				selectedCheck.setSelected(device.isNotified());
 				
 				selectedCheck.selectedProperty().addListener(new ChangeListener<Boolean>() {
 				    @Override
 				    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-			    		Pair<MFXGenericDialog, MFXStageDialog> alert = AlertManager.createWarning("Cuidado", "¿Desea marcar esta clase como" + (newValue?" ":" NO ") + "notificada?.", gridPane);
-			    		alert.getKey().addActions(
-			    				Map.entry(new MFXButton("Confirmar"), e -> {
-			    					alert.getValue().close();
-						        	StudentReport student = table.getSelectionModel().getSelectedValue();
-						        	LessonController lessonController = LessonController.getInstance();
-						        	lessonController.setNotified(student, newValue);
-			    				}),
-			    				Map.entry(new MFXButton("Cancelar"), e -> {
-			    					alert.getValue().close();
-			    					selectedCheck.setSelected(oldValue);
-			    				})
-			    		);
-			    		alert.getValue().showDialog();
+			        	StudentReport student = table.getSelectionModel().getSelectedValue();
+			        	LessonController lessonController = LessonController.getInstance();
+			        	lessonController.setNotified(student, newValue);
+			        	device.setNotified(newValue);
 				    }
 				});
 				selectedCheck.setContentDisposition(ContentDisplay.GRAPHIC_ONLY);
@@ -117,7 +112,7 @@ public class StudentReportScreenController implements Initializable{
 				selectedCheck.selectedProperty().addListener(new ChangeListener<Boolean>() {
 				    @Override
 				    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				        if(newValue) {
+				    	if(newValue) {
 				    		Pair<MFXGenericDialog, MFXStageDialog> alert = AlertManager.createWarning("Cuidado", "¿Desea marcar esta clase como pagada?.", gridPane);
 				    		alert.getKey().addActions(
 				    				Map.entry(new MFXButton("Confirmar"), e -> {
@@ -141,8 +136,8 @@ public class StudentReportScreenController implements Initializable{
 				return rc;
 			});
 			
-			table.getTableColumns().addAll(totalHoursColumn, dayColumn, teacherColumn, subjectColumn, 
-					institutionColumn, totalColumn, notifiedColumn, isPaidColumn);
+			table.getTableColumns().addAll(dayColumn, teacherColumn, subjectColumn, 
+					institutionColumn, totalHoursColumn, totalColumn, notifiedColumn, isPaidColumn);
 			
 			table.getFilters().addAll(
 				new DoubleFilter<>("Total ($)", StudentReport::getTotal),
@@ -153,7 +148,9 @@ public class StudentReportScreenController implements Initializable{
 				new StringFilter<>("Institución", StudentReport::getInstitutionName)
 			);
 			table.setItems( studentItems );
-			vBoxInternal.getChildren().setAll(hBox, table);
+			table.prefHeightProperty().bind(Bindings.size(studentItems).multiply(35).add(50));
+			System.out.println(table.heightProperty());
+			vBoxInternal.getChildren().addAll(hBox, table);
 			vBox.getChildren().add(vBoxInternal);
 		});
 	}	

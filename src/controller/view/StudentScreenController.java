@@ -2,15 +2,11 @@ package controller.view;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.MessageFormat;
-import java.text.ParsePosition;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import controller.AlertManager;
-import controller.ValidatorManager;
 import controller.model.StudentController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -23,6 +19,7 @@ import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
 import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
 import io.github.palexdev.materialfx.filter.EnumFilter;
 import io.github.palexdev.materialfx.filter.StringFilter;
+import io.github.palexdev.materialfx.utils.ScrollUtils;
 import io.github.palexdev.materialfx.utils.others.observables.When;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,13 +28,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Pair;
 import model.EducationLevel;
 import model.Student;
+import utils.AlertManager;
+import utils.MaterialFXManager;
+import utils.ValidatorManager;
 
 public class StudentScreenController implements Initializable{
 	@FXML
@@ -85,15 +84,18 @@ public class StudentScreenController implements Initializable{
 		edLevelField.selectFirst();
 		ValidatorManager.notNullConstraint(nameField);
 		ValidatorManager.notNullConstraint(surnameField);
+		ValidatorManager.notNullConstraint(phoneNumberField);
+		ValidatorManager.notNullConstraint(birthdayField);
+		ValidatorManager.notNullConstraint(edLevelField);
 	}
 	private void setupTable() {
-		MFXTableColumn<Student> nameColumn = new MFXTableColumn<>("Nombre", false, Comparator.comparing(Student::getName));
-		MFXTableColumn<Student> surnameColumn = new MFXTableColumn<>("Apellido", false, Comparator.comparing(Student::getSurname));
-		MFXTableColumn<Student> addressColumn = new MFXTableColumn<>("Dirección", false, Comparator.comparing(Student::getAddress));
-		MFXTableColumn<Student> phoneNumberColumn = new MFXTableColumn<>("Número", false, Comparator.comparing(Student::getPhoneNumber));
-		MFXTableColumn<Student> birthdayColumn = new MFXTableColumn<>("Cumpleaños", false, Comparator.comparing(Student::getBirthday));
-		MFXTableColumn<Student> socialMediaColumn = new MFXTableColumn<>("Red social", false, Comparator.comparing(Student::getSocialMedia));
-		MFXTableColumn<Student> levelColumn = new MFXTableColumn<>("Nivel", false, Comparator.comparing(Student::getEducationLevel));
+		MFXTableColumn<Student> nameColumn = new MFXTableColumn<>("Nombre", true, Comparator.comparing(Student::getName));
+		MFXTableColumn<Student> surnameColumn = new MFXTableColumn<>("Apellido", true, Comparator.comparing(Student::getSurname));
+		MFXTableColumn<Student> addressColumn = new MFXTableColumn<>("Dirección", true, Comparator.comparing(Student::getAddress));
+		MFXTableColumn<Student> phoneNumberColumn = new MFXTableColumn<>("Número", true, Comparator.comparing(Student::getPhoneNumber));
+		MFXTableColumn<Student> birthdayColumn = new MFXTableColumn<>("Cumpleaños", true, Comparator.comparing(Student::getBirthday));
+		MFXTableColumn<Student> socialMediaColumn = new MFXTableColumn<>("Red social", true, Comparator.comparing(Student::getSocialMedia));
+		MFXTableColumn<Student> levelColumn = new MFXTableColumn<>("Nivel", true, Comparator.comparing(Student::getEducationLevel));
 		
 		nameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getName));
 		surnameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getSurname));
@@ -122,7 +124,11 @@ public class StudentScreenController implements Initializable{
 			e.printStackTrace();
 		}
     }
-
+    
+    private Boolean checkFieldConstraints() {
+    	return nameField.isValid() && surnameField.isValid() && phoneNumberField.isValid()
+    			&& birthdayField.isValid() && edLevelField.isValid();
+    }
     @FXML
     void addStudent(ActionEvent event) {
     	String name = nameField.getText().trim();
@@ -134,31 +140,19 @@ public class StudentScreenController implements Initializable{
     	String description = descriptionField.getText().trim();
     	EducationLevel lvl = edLevelField.getSelectedItem();
     	
-    	if(nameField.validate().isEmpty() && surnameField.validate().isEmpty() && lvl!=null) {
+    	if(checkFieldConstraints()) {
     		StudentController studentController = StudentController.getInstance();
     		//try - catch
     		Student newStudent = studentController.createStudent(name, surname, address, phoneNumber, birthday, socialMedia, description, lvl);    		
     		students.add(newStudent);
     		
-    		nameField.clear();
-    		nameField.deselect();
-        	surnameField.clear();
-        	surnameField.deselect();
-        	addressField.clear();
-        	addressField.deselect();
-        	phoneNumberField.clear();
-        	phoneNumberField.deselect();
-        	birthdayField.setValue(null);
-        	birthdayField.deselect();
-        	socialMediaField.clear();
-        	socialMediaField.deselect();
-        	descriptionField.clear();
-        	descriptionField.deselect();
-        	//edLevelField.selectFirst();
+    		MaterialFXManager.clearAllFields(nameField, surnameField, addressField, phoneNumberField, birthdayField, socialMediaField);
+    		descriptionField.clear();
+    		
         	AlertManager.createInformation("Éxito", "El estudiante se ha creado exitosamente", gridPane);
     	}
     	else {
-    		AlertManager.createError("Error" , "Debe completar los campos nombre y apellido", gridPane);
+    		AlertManager.createError("Error" , "Complete todos los campos obligatorios antes de agregar un nuevo alumno", gridPane);
     	}
     }
 
@@ -169,10 +163,10 @@ public class StudentScreenController implements Initializable{
     		Pair<MFXGenericDialog, MFXStageDialog> alert = AlertManager.createWarning("Cuidado", "¿Desea eliminar este estudiante del sistema? Una vez realizado será irrevertible.", gridPane);
     		alert.getKey().addActions(
     				Map.entry(new MFXButton("Confirmar"), e -> {
+    					alert.getValue().close();
     					StudentController studentController = StudentController.getInstance();
     					studentController.deleteStudent(selectedStudent);
     					students.remove(selectedStudent);
-    					alert.getValue().close();
     				}),
     				Map.entry(new MFXButton("Cancelar"), e -> alert.getValue().close())
     		);

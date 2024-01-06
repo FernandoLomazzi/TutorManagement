@@ -3,11 +3,8 @@ package controller.model;
 import java.util.List;
 
 import model.Institution;
-import model.Subject;
 import model.dao.InstitutionDao;
-import model.dao.SubjectDao;
 import model.dao.sqlite.InstitutionDaoSQLite;
-import model.dao.sqlite.SubjectDaoSQLite;
 
 public class InstitutionController {
 	private static InstitutionController controller;

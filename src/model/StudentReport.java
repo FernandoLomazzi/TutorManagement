@@ -8,9 +8,10 @@ public class StudentReport {
 	private LocalDate day;
 	private Integer lessonID, totalHours;
 	private Double pricePerHour;
+	private Boolean notified;
 	
 	public StudentReport(Integer lessonID, String studentName, String studentSurname, String teacherName, String teacherSurname,
-			String subjectName,	String institutionName, LocalDate day, Integer totalHours, Double pricePerHour) {
+			String subjectName,	String institutionName, LocalDate day, Integer totalHours, Double pricePerHour, Boolean notified) {
 		this.lessonID = lessonID;
 		this.studentName = studentName;
 		this.studentSurname = studentSurname;
@@ -21,8 +22,14 @@ public class StudentReport {
 		this.day = day;
 		this.totalHours = totalHours;
 		this.pricePerHour = pricePerHour;
+		this.notified = notified;
 	}
-
+	public void setNotified(Boolean notified) {
+		this.notified = notified;
+	}
+	public Boolean isNotified() {
+		return notified;
+	}
 	public String getStudentCompleteName() {
 		return studentName + " " + studentSurname;
 	}

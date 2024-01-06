@@ -1,44 +1,16 @@
 package controller.view;
 
 import java.net.URL;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import controller.AlertManager;
-import controller.model.LessonController;
-import controller.model.StudentController;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
-import io.github.palexdev.materialfx.controls.MFXTableColumn;
-import io.github.palexdev.materialfx.controls.MFXTableView;
-import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
-import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
-import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
-import io.github.palexdev.materialfx.filter.DoubleFilter;
-import io.github.palexdev.materialfx.filter.IntegerFilter;
-import io.github.palexdev.materialfx.filter.StringFilter;
-import io.github.palexdev.mfxcore.controls.Label;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.util.Pair;
-import model.StudentReport;
+import model.TeacherReport;
 
 public class TeacherReportScreenController implements Initializable {
 	@FXML
@@ -53,7 +25,7 @@ public class TeacherReportScreenController implements Initializable {
 	// quizá poner un stack pane para cada maestro
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		scrollPane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+		/*scrollPane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 		scrollPane.prefViewportHeightProperty().bind(gridPane.heightProperty().subtract(100));
 		StudentController studentController = StudentController.getInstance();
 		teachers = studentController.getUnpaidStudents();
@@ -155,6 +127,6 @@ public class TeacherReportScreenController implements Initializable {
 			table.setItems( studentItems );
 			vBoxInternal.getChildren().setAll(hBox, table);
 			vBox.getChildren().add(vBoxInternal);
-		});
+		});*/
 	}	
 }

@@ -29,7 +29,8 @@ public class StudentDaoSQLite implements StudentDao {
 				+ "    Teacher.name,\r\n"
 				+ "    Teacher.surname,\r\n"
 				+ "    Subject.name,\r\n"
-				+ "    Institution.name\r\n"
+				+ "    Institution.name,\r\n"
+				+ "    Payment.is_notified\r\n"
 				+ "FROM\r\n"
 				+ "    Payment\r\n"
 				+ "INNER JOIN\r\n"
@@ -61,6 +62,8 @@ public class StudentDaoSQLite implements StudentDao {
 				String subjectName;
 				String instName;
 				
+				Boolean paymentIsNotified;
+				
 				studentName = rs.getString(1);
 				studentSurname = rs.getString(2);
 				lessonID = rs.getInt(3);
@@ -71,8 +74,9 @@ public class StudentDaoSQLite implements StudentDao {
 				teacherSurname = rs.getString(8);
 				subjectName = rs.getString(9);
 				instName = rs.getString(10);
+				paymentIsNotified = rs.getBoolean(11);
 				StudentReport studentReport = new StudentReport(lessonID, studentName, studentSurname, 
-						teacherName, teacherSurname, subjectName, instName, lessonDay, lessonTotalHours, lessonPricePerHour);
+						teacherName, teacherSurname, subjectName, instName, lessonDay, lessonTotalHours, lessonPricePerHour, paymentIsNotified);
 				String studentCompleteName = studentName + " " + studentSurname;
 				if(studentsReport.containsKey(studentCompleteName)) {
 					studentsReport.get(studentCompleteName).add(studentReport);

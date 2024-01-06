@@ -39,7 +39,7 @@
                         <MFXTextField fx:id="nameField" floatMode="BORDER" floatingText="Nombre" maxWidth="200.0" />
                         <MFXTextField fx:id="surnameField" floatMode="BORDER" floatingText="Apellido" maxWidth="200.0" />
                         <MFXTextField fx:id="addressField" floatMode="BORDER" floatingText="Dirección" maxWidth="200.0" />
-                        <MFXTextField fx:id="phoneNumberField" floatMode="BORDER" floatingText="Número" maxWidth="200.0" />
+                        <MFXTextField fx:id="phoneNumberField" floatMode="BORDER" floatingText="Número de teléfono" maxWidth="200.0" />
                         <MFXDatePicker fx:id="birthdayField" floatMode="BORDER" floatingText="Cumpleaños" maxWidth="200.0" />
                         <MFXTextField fx:id="socialMediaField" floatMode="BORDER" floatingText="Red social" maxWidth="200.0" />
                         <MFXComboBox fx:id="edLevelField" floatMode="BORDER" floatingText="Nivel" prefWidth="200.0" />
