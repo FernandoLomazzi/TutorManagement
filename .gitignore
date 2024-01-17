@@ -1,6 +1,7 @@
 .classpath
 .project
 .settings/
+dependency-reduced-pom.xml
 
 # Compiled class file
 *.class

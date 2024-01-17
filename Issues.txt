@@ -1,13 +1,17 @@
 To do:
 	- Make css
 	- Resize column to use all space
-	- check not nulls consistency
-	- Improve scrolling
 	- add logos to columns (graphics)
-	- check null in date pickers
-	- check catchs
 	- Teacher birthday notnull in controller
-	- make alert close before code
+	- Check lesson state usages.
+	- Add default/cancel button fxml
+	- Improve exceptions
 Issues:
 	- Table could exceed screen
-	- Floating label stills up after adding student/teacher
+
+Checks:
+	- make alert close before code
+	- Improve scrolling
+	- not null consistency
+	- sorting 
+	- Database constraints
