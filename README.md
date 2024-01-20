@@ -19,4 +19,4 @@
 - NFR-1: The system must allow migrating existing data from an Excel spreadsheet.
 
 ### Entity-Relationship Diagram
-![]{/docs/EntityRelationshipDiagram.png}
+![](/docs/EntityRelationshipDiagram.png)
