@@ -1,19 +1,20 @@
-To do:
-	- Make css
+Roadmap:
+Major:
+	- Css
+	- More stats
+
+Minor:
 	- Resize column to use all space
-	- add logos to columns (graphics)
-	- Teacher birthday notnull in controller
-	- Check lesson state usages.
+	- Add logos to columns (graphics)
+	- Improve exceptions encapsulation
 	- Add default/cancel button fxml
-	- Improve exceptions
-	
+
 Issues:
 	- Table could exceed screen
-	- Student Level may be a subject property
 
 Checks:
-	- make alert close before code
+	- Make alert close before code
 	- Improve scrolling
-	- not null consistency
-	- sorting 
+	- Not null consistency
+	- Sorting 
 	- Database constraints

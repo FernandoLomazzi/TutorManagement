@@ -17,11 +17,6 @@ public class Lesson {
 		id = actualId++;
 	}
 
-	public Lesson(Integer id, Double totalHours, LocalDate day, Double pricePerHour, LessonState state,
-			List<Payment> payments, Commission commission, Subject subject) {
-
-	}
-
 	public Teacher getTeacher() {
 		return commission.getTeacher();
 	}
