@@ -73,6 +73,7 @@ public class StudentDaoSQLite implements StudentDao {
 				}
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new StudentSQLException("Hubo un error al intentar obtener todos los alumnos con deudas", e);
 		} finally {
 			ConnectionSQLite.disconnect(conn);
@@ -96,6 +97,7 @@ public class StudentDaoSQLite implements StudentDao {
 			st.setString(8, student.getEducationLevel().toString());
 			st.execute();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new StudentSQLException("Hubo un error al intentar crear al alumno", e);
 		} finally {
 			ConnectionSQLite.disconnect(conn);
@@ -125,6 +127,7 @@ public class StudentDaoSQLite implements StudentDao {
 			st.setString(2, student.getSurname());
 			st.execute();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new StudentSQLException("Hubo un error al intentar eliminar al alumno", e);
 		} finally {
 			ConnectionSQLite.disconnect(conn);
@@ -156,6 +159,7 @@ public class StudentDaoSQLite implements StudentDao {
 				students.add(student);
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new StudentSQLException("Hubo un error al intentar obtener a todos los alumnos", e);
 		} finally {
 			ConnectionSQLite.disconnect(conn);

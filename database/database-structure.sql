@@ -31,7 +31,6 @@ CREATE TABLE IF NOT EXISTS "Lesson" (
 	"total_hours"	REAL NOT NULL,
 	"day"	TEXT NOT NULL,
 	"price_per_hour"	REAL NOT NULL,
-	"state"	TEXT NOT NULL CHECK("state" IN ("UNPAID", "STUDENTUNPAID", "TEACHERUNPAID", "PAID")),
 	"id_subject"	INTEGER NOT NULL,
 	FOREIGN KEY("id_subject") REFERENCES "Subject"("id") ON DELETE RESTRICT,
 	PRIMARY KEY("id")
@@ -63,4 +62,5 @@ CREATE TABLE IF NOT EXISTS "Commission" (
 	FOREIGN KEY("id_teacher") REFERENCES "Teacher"("id") ON DELETE RESTRICT,
 	PRIMARY KEY("id_lesson","id_teacher")
 );
+INSERT INTO "Teacher" VALUES (1,'Ingres','Ar','2024-01-19','');
 COMMIT;

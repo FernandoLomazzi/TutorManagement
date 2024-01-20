@@ -1,6 +1,5 @@
 package com.tutormanagement.model.dao.sqlite;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,6 +20,7 @@ public class ConnectionSQLite {
 		try {
 			conn = DriverManager.getConnection(url);
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new ConnectionException("Error al establecer una conexión con la base de datos.", e);
 		}
 		return conn;

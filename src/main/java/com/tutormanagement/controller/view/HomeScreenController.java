@@ -88,7 +88,6 @@ public class HomeScreenController implements Initializable {
 
 		ScrollUtils.addSmoothScrolling(scrollPane);
 
-		// The only way to get a fucking smooth image in this shitty framework
 		/*
 		 * Image image = new Image(MFXDemoResourcesLoader.load("logo_alt.png"), 64, 64,
 		 * true, true); ImageView logo = new ImageView(image); Circle clip = new
@@ -110,7 +109,7 @@ public class HomeScreenController implements Initializable {
 		features.add(new ViewValues("/view/StudentScreen.fxml", "fas-user-graduate", "Alumnos"));
 		features.add(new ViewValues("/view/TeacherScreen.fxml", "fas-user-tie", "Profesores"));
 		features.add(new ViewValues("/view/SubjectScreen.fxml", "fas-book", "Materias"));
-		featuresReload.add(new ViewValues("/view/LessonScreen.fxml", "fas-users-between-lines", "Clase"));
+		featuresReload.add(new ViewValues("/view/LessonScreen.fxml", "fas-users-between-lines", "Clases"));
 		featuresReload.add(new ViewValues("/view/StatsScreen.fxml", "fas-chart-column", "Estadísticas"));
 
 		List<ToggleButton> nodes = features.stream().map(f -> {

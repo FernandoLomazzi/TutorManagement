@@ -7,10 +7,10 @@ INSERT INTO "Student" VALUES (3,'Martin','Fort','','','2024-01-19','','','PRIMAR
 INSERT INTO "Student" VALUES (4,'Sergio','Maza','','','2024-01-14','','','PRIMARIA');
 INSERT INTO "Teacher" VALUES (1,'Romina','Malas','2024-01-02','');
 INSERT INTO "Teacher" VALUES (2,'Sofi','Kimiiy','2024-01-02','');
-INSERT INTO "Lesson" VALUES (1,54.0,'2024-01-10',2.0,'UNPAID',1);
-INSERT INTO "Lesson" VALUES (2,2.0,'2024-01-09',3.0,'UNPAID',2);
-INSERT INTO "Lesson" VALUES (3,5.0,'2024-01-01',2.0,'STUDENTUNPAID',3);
-INSERT INTO "Lesson" VALUES (4,1.0,'2024-01-22',2.0,'STUDENTUNPAID',2);
+INSERT INTO "Lesson" VALUES (1,54.0,'2024-01-10',2.0,1);
+INSERT INTO "Lesson" VALUES (2,2.0,'2024-01-09',3.0,2);
+INSERT INTO "Lesson" VALUES (3,5.0,'2024-01-01',2.0,3);
+INSERT INTO "Lesson" VALUES (4,1.0,'2024-01-22',2.0,2);
 INSERT INTO "Subject" VALUES (1,'AEDD',1);
 INSERT INTO "Subject" VALUES (2,'Arquitectura de computadoras',1);
 INSERT INTO "Subject" VALUES (3,'AMI 2',2);

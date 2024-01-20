@@ -103,6 +103,21 @@ public class LessonScreenController implements Initializable {
 		ValidatorManager.notNullConstraint(teacherField);
 		ValidatorManager.notNullConstraint(pricePerHourTeacherField);
 		// add only numbers in some fields
+		teacherField.setOnAction(event -> {
+			Teacher selTeacher = teacherField.getSelectedItem();
+			if(selTeacher!=null && selTeacher.getName().equals("Ingres") && selTeacher.getSurname().equals("Ar")) {
+				pricePerHourTeacherField.setDisable(true);
+				pricePerHourTeacherField.setText("0");
+				teacherPaidToggle.setDisable(true);
+				teacherPaidToggle.setSelected(true);				
+			}
+			else if(pricePerHourTeacherField.isDisable() && teacherPaidToggle.isDisable()){
+				MaterialFXManager.clearAllFields(pricePerHourTeacherField);
+				pricePerHourTeacherField.setDisable(false);
+				teacherPaidToggle.setSelected(false);
+				teacherPaidToggle.setDisable(false);
+			}
+		});
 	}
 
 	private void setupTable() {
@@ -211,7 +226,6 @@ public class LessonScreenController implements Initializable {
 			lesson.setSubject(subject);
 			lesson.setTotalHours(totalHours);
 			lesson.setCommission(comm);
-			lesson.updateState();
 			lessonController.createLesson(lesson);
 
 			AlertManager.createInformation("Éxito", "La clase se ha creado exitosamente", borderPane);
@@ -229,39 +243,31 @@ public class LessonScreenController implements Initializable {
 	}
 
 	private class StudentView extends Student {
-		private SimpleBooleanProperty isSelected;
-		private SimpleBooleanProperty isPaid;
+		private Boolean isSelected;
+		private Boolean isPaid;
 
 		public StudentView(Student student) {
 			super(student.getName(), student.getSurname(), student.getAddress(), student.getPhoneNumber(),
 					student.getBirthday(), student.getSocialMedia(), student.getDescription(),
 					student.getEducationLevel());
-			isSelected = new SimpleBooleanProperty(false);
-			isPaid = new SimpleBooleanProperty(false);
+			isSelected = false;
+			isPaid = false;
 		}
 
 		public Boolean isSelected() {
-			return isSelected.getValue();
-		}
-
-		public Boolean isPaid() {
-			return isPaid.getValue();
-		}
-
-		public SimpleBooleanProperty isSelectedProperty() {
 			return isSelected;
 		}
 
-		public SimpleBooleanProperty isPaidProperty() {
+		public Boolean isPaid() {
 			return isPaid;
 		}
 
 		public void setSelected(Boolean selected) {
-			this.isSelected.set(selected);
+			isSelected = selected;
 		}
 
 		public void setPaid(Boolean paid) {
-			this.isPaid.set(paid);
+			isPaid = paid;
 		}
 	}
 }

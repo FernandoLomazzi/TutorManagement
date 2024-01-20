@@ -93,6 +93,7 @@ public class SubjectScreenController implements Initializable {
 		MFXTableColumn<Subject> subInstColumn = new MFXTableColumn<>("Institución", true,
 				Comparator.comparing(Subject::getInstitutionString));
 		instNameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Institution::getName));
+		instNameColumn.setPrefWidth(200);
 		subNameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Subject::getName));
 		subInstColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Subject::getInstitution));
 

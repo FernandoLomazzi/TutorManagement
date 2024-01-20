@@ -41,12 +41,12 @@
         <padding>
             <Insets bottom="10.0" left="10.0" top="60.0" />
         </padding>
-        <Label graphicTextGap="15.0" styleClass="header" text="MaterialFX">
+        <Label graphicTextGap="15.0" styleClass="header" text="Gestor de Clases">
             <graphic>
                 <StackPane fx:id="logoContainer" />
             </graphic>
         </Label>
-        <Label styleClass="menu-label" text="Components">
+        <Label styleClass="menu-label" text="Funcionalidades">
             <VBox.margin>
                 <Insets left="5.0" top="40.0" />
             </VBox.margin>

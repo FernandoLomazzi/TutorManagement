@@ -9,9 +9,11 @@ import io.github.palexdev.materialfx.theming.MaterialFXStylesheets;
 import io.github.palexdev.materialfx.theming.UserAgentBuilder;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -30,13 +32,13 @@ public class Main extends Application {
 			scene.setFill(Color.TRANSPARENT);
 			primaryStage.initStyle(StageStyle.TRANSPARENT);
 			primaryStage.setScene(scene);
-			/*
-			 * Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-			 * primaryStage.setX(primaryScreenBounds.getMinX());
-			 * primaryStage.setY(primaryScreenBounds.getMinY());
-			 * primaryStage.setWidth(primaryScreenBounds.getWidth());
-			 * primaryStage.setHeight(primaryScreenBounds.getHeight());
-			 */
+			
+			Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+			primaryStage.setX(primaryScreenBounds.getMinX());
+			primaryStage.setY(primaryScreenBounds.getMinY());
+			primaryStage.setWidth(primaryScreenBounds.getWidth());
+			primaryStage.setHeight(primaryScreenBounds.getHeight());
+			 
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -23,6 +23,7 @@ public class InstitutionDaoSQLite implements InstitutionDao {
 			st.setString(1, institution.getName());
 			st.execute();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new InstitutionSQLException("Hubo un error al intentar crear la institución", e);
 		} finally {
 			ConnectionSQLite.disconnect(conn);
@@ -38,6 +39,7 @@ public class InstitutionDaoSQLite implements InstitutionDao {
 			st.setString(1, institution.getName());
 			st.execute();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new InstitutionSQLException("Hubo un error al intentar eliminar la institución", e);
 		} finally {
 			ConnectionSQLite.disconnect(conn);
@@ -59,6 +61,7 @@ public class InstitutionDaoSQLite implements InstitutionDao {
 				institutions.add(teacher);
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new InstitutionSQLException("Hubo un error al intentar obtener todas las instituciones", e);
 		} finally {
 			ConnectionSQLite.disconnect(conn);

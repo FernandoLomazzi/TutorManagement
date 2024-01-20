@@ -1,0 +1,3 @@
+BEGIN TRANSACTION;
+INSERT INTO "Teacher" VALUES (1,'Ingres','Ar','','');
+COMMIT;

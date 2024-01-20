@@ -14,15 +14,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tutormanagement.controller.view.LessonScreenController">
+<BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tutormanagement.controller.view.LessonScreenController">
    <center>
       <StackPane>
          <children>
             <VBox spacing="20.0" StackPane.alignment="TOP_CENTER">
                <children>
-                  <Label maxWidth="1.7976931348623157E308" text="Crear nueva clase">
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Creación de clases">
                      <font>
-                        <Font size="16.0" />
+                        <Font size="18.0" />
                      </font>
                   </Label>
                   <HBox spacing="20.0">
@@ -40,7 +40,7 @@
                         <MFXRectangleToggleNode fx:id="teacherPaidToggle" maxHeight="1.7976931348623157E308" prefWidth="115.0" text="Pagado" />
                      </children>
                   </HBox>
-                  <Label text="Alumnos">
+                  <Label maxWidth="1.7976931348623157E308" text="Alumnos">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -57,6 +57,6 @@
       </StackPane>
    </center>
    <padding>
-      <Insets bottom="30.0" left="30.0" right="30.0" top="20.0" />
+      <Insets bottom="30.0" left="60.0" right="30.0" top="20.0" />
    </padding>
 </BorderPane>

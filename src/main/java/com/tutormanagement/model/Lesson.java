@@ -9,34 +9,17 @@ public class Lesson {
 	private Double totalHours;
 	private LocalDate day;
 	private Double pricePerHour;
-	private LessonState state;
 	private List<Payment> payments;
 	private Commission commission;
 	private Subject subject;
 
 	public Lesson() {
-		state = LessonState.UNPAID;
 		id = actualId++;
 	}
 
 	public Lesson(Integer id, Double totalHours, LocalDate day, Double pricePerHour, LessonState state,
 			List<Payment> payments, Commission commission, Subject subject) {
 
-	}
-
-	public void updateState() {
-		Boolean studentPaid = true, teacherPaid = commission.isPaid();
-		for (Payment p : payments)
-			studentPaid &= p.isPaid();
-		if (studentPaid && teacherPaid) {
-			state = LessonState.PAID;
-		} else if (studentPaid && !teacherPaid) {
-			state = LessonState.TEACHERUNPAID;
-		} else if (!studentPaid && teacherPaid) {
-			state = LessonState.STUDENTUNPAID;
-		} else {
-			state = LessonState.UNPAID;
-		}
 	}
 
 	public Teacher getTeacher() {
@@ -69,14 +52,6 @@ public class Lesson {
 
 	public void setPricePerHour(Double pricePerHour) {
 		this.pricePerHour = pricePerHour;
-	}
-
-	public LessonState getState() {
-		return state;
-	}
-
-	public void setState(LessonState state) {
-		this.state = state;
 	}
 
 	public List<Payment> getPayments() {

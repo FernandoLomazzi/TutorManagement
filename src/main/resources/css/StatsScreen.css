@@ -1,0 +1,14 @@
+@import 'MFXColors.css';
+
+/**************************************************
+ * Chart bar
+**************************************************/
+.default-color0.chart-bar{
+	-fx-bar-fill: GREEN;
+}
+.default-color1.chart-bar{
+	-fx-bar-fill: RED;
+}
+.default-color2.chart-bar{
+	-fx-bar-fill: BLUE;
+}

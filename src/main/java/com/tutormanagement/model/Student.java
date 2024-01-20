@@ -1,8 +1,6 @@
 package com.tutormanagement.model;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Student {
 	private String name;
@@ -13,7 +11,6 @@ public class Student {
 	private String socialMedia;
 	private String description;
 	private EducationLevel lvl;
-	private List<Payment> payments;
 
 	public Student() {
 		;

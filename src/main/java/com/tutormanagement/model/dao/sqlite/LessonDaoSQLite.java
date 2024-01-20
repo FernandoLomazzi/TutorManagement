@@ -28,6 +28,7 @@ public class LessonDaoSQLite implements LessonDao {
 			st.setInt(4, student.getLessonID());
 			st.execute();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new StudentSQLException("Hubo un error al intentar marcar como notificada esta clase para "
 					+ student.getStudentCompleteName(), e);
 		} finally {
@@ -37,9 +38,7 @@ public class LessonDaoSQLite implements LessonDao {
 
 	@Override
 	public void makePayment(StudentReport student) throws ConnectionException, StudentSQLException {
-		// String statement = "UPDATE Payment SET Payment.paid=1 AND Payment.notified=1
-		// WHERE Payment.id_student=() AND "
-		String statement = "UPDATE Payment SET paid=1 WHERE "
+		String statement = "UPDATE Payment SET paid=1, is_notified=1 WHERE "
 				+ "Payment.id_student=(SELECT id FROM Student WHERE Student.name=? AND Student.surname=?) "
 				+ "AND Payment.id_lesson=?;";
 		Connection conn = ConnectionSQLite.connect();
@@ -50,6 +49,7 @@ public class LessonDaoSQLite implements LessonDao {
 			st.setInt(3, student.getLessonID());
 			st.execute();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new StudentSQLException(
 					"Hubo un error al intentar marcar como pagada esta clase para " + student.getStudentCompleteName(),
 					e);
@@ -60,8 +60,6 @@ public class LessonDaoSQLite implements LessonDao {
 
 	@Override
 	public void makePayment(TeacherReport teacherReport) throws ConnectionException, TeacherSQLException {
-		// String statement = "UPDATE Payment SET Payment.paid=1 AND Payment.notified=1
-		// WHERE Payment.id_student=() AND "
 		String statement = "UPDATE Commission SET paid=1 WHERE Commission.id_teacher="
 				+ "(SELECT id FROM Teacher WHERE name=? AND surname=?) AND id_lesson=?";
 		Connection conn = ConnectionSQLite.connect();
@@ -72,6 +70,7 @@ public class LessonDaoSQLite implements LessonDao {
 			st.setInt(3, teacherReport.getLessonID());
 			st.execute();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new TeacherSQLException(
 					"Hubo un error al intentar marcar como pagada esta clase para " + teacherReport.getTeacherName(),
 					e);
@@ -82,8 +81,8 @@ public class LessonDaoSQLite implements LessonDao {
 
 	@Override
 	public void createLesson(Lesson lesson) throws ConnectionException, LessonSQLException {
-		String statementLesson = "INSERT INTO Lesson (id, total_hours, day, price_per_hour, state, id_subject) "
-				+ "VALUES (?, ?, ?, ?, ?, (SELECT id FROM Subject WHERE name=?))";
+		String statementLesson = "INSERT INTO Lesson (id, total_hours, day, price_per_hour, id_subject) "
+				+ "VALUES (?, ?, ?, ?, (SELECT id FROM Subject WHERE name=?))";
 		String statementCommission = "INSERT INTO Commission (id_lesson, id_teacher, price_per_hour, total, paid) "
 				+ "VALUES (?, (SELECT id FROM Teacher WHERE name=? AND surname=?), ?, ?, ?)";
 		String statementPayment = "INSERT INTO Payment (id_student, id_lesson, paid, is_notified)"
@@ -96,8 +95,7 @@ public class LessonDaoSQLite implements LessonDao {
 			stLesson.setDouble(2, lesson.getTotalHours());
 			stLesson.setString(3, DateParserSQLite.parseDate(lesson.getDay()));
 			stLesson.setDouble(4, lesson.getPricePerHour());
-			stLesson.setString(5, lesson.getState().toString());
-			stLesson.setString(6, lesson.getSubject().getName());
+			stLesson.setString(5, lesson.getSubject().getName());
 			stLesson.execute();
 			PreparedStatement stComm = conn.prepareStatement(statementCommission);
 			stComm.setInt(1, lesson.getId());
@@ -118,6 +116,7 @@ public class LessonDaoSQLite implements LessonDao {
 			}
 			conn.commit();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new LessonSQLException("Hubo un error al intentar crear la clase", e);
 		} finally {
 			ConnectionSQLite.disconnect(conn);
@@ -141,6 +140,7 @@ public class LessonDaoSQLite implements LessonDao {
 			rs.next();
 			max_id = rs.getInt(1);
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new LessonSQLException("Hubo un error al intentar crear la clase", e);
 		} finally {
 			ConnectionSQLite.disconnect(conn);

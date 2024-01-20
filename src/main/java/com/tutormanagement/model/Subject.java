@@ -1,7 +1,5 @@
 package com.tutormanagement.model;
 
-import java.util.List;
-
 public class Subject {
 	private String name;
 	private Institution institution;

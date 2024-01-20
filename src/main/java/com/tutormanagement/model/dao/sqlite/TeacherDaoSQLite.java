@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.tutormanagement.model.EducationLevel;
 import com.tutormanagement.model.Teacher;
 import com.tutormanagement.model.TeacherReport;
 import com.tutormanagement.model.dao.TeacherDao;
@@ -79,6 +80,7 @@ public class TeacherDaoSQLite implements TeacherDao {
 			}
 			conn.commit();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new TeacherSQLException("Hubo un error al intentar obtener todos los profesores deudores", e);
 		} finally {
 			ConnectionSQLite.disconnect(conn);
@@ -99,6 +101,7 @@ public class TeacherDaoSQLite implements TeacherDao {
 			st.setString(4, teacher.getDescription());
 			st.execute();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new TeacherSQLException("Hubo un error al intentar crear al profesor", e);
 		} finally {
 			ConnectionSQLite.disconnect(conn);
@@ -126,6 +129,7 @@ public class TeacherDaoSQLite implements TeacherDao {
 			st.setString(2, teacher.getSurname());
 			st.execute();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new TeacherSQLException("Hubo un error al intentar eliminar al profesor", e);
 		} finally {
 			ConnectionSQLite.disconnect(conn);
@@ -151,6 +155,7 @@ public class TeacherDaoSQLite implements TeacherDao {
 				teachers.add(teacher);
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new TeacherSQLException("Hubo un error al intentar obtener a todos los profesores", e);
 		} finally {
 			ConnectionSQLite.disconnect(conn);
@@ -158,12 +163,138 @@ public class TeacherDaoSQLite implements TeacherDao {
 
 		return teachers;
 	}
-
+	
+	@Override
+	public Map<EducationLevel, Double> getTotalIncomePerLevel(LocalDate beginDate, LocalDate endDate) throws ConnectionException, TeacherSQLException {
+		Map<EducationLevel, Double> inc = new HashMap<>();
+		String statement = "SELECT education_level, total_hours*price_per_hour FROM Student "
+				+ "INNER JOIN Payment ON Student.id=Payment.id_student "
+				+ "INNER JOIN Lesson ON Payment.id_lesson=Lesson.id "
+				+ "WHERE Payment.paid=1 AND Lesson.day BETWEEN ? AND ?";
+		Connection conn = ConnectionSQLite.connect();
+		try {
+			PreparedStatement st = conn.prepareStatement(statement);
+			st.setString(1, DateParserSQLite.parseDate(beginDate));
+			st.setString(2, DateParserSQLite.parseDate(endDate));
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				EducationLevel level = EducationLevel.valueOf(rs.getString(1));
+				Double total = rs.getDouble(2);
+				if(inc.containsKey(level)) {
+					inc.put(level, inc.get(level) + total);
+				}
+				else {
+					inc.put(level, total);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new TeacherSQLException("Hubo un error al intentar obtener el total de ganancias", e);
+		} finally {
+			ConnectionSQLite.disconnect(conn);
+		}
+		return inc;
+	}
+	@Override
+	public Map<LocalDate, Double> getTotalIncomePerTime(LocalDate beginDate, LocalDate endDate) throws ConnectionException, TeacherSQLException {
+		Map<LocalDate, Double> inc = new HashMap<>();
+		String statement = "SELECT Lesson.day, total_hours*price_per_hour FROM Student "
+				+ "INNER JOIN Payment ON Student.id=Payment.id_student "
+				+ "INNER JOIN Lesson ON Payment.id_lesson=Lesson.id "
+				+ "WHERE Payment.paid=1 AND Lesson.day BETWEEN ? AND ?";
+		Connection conn = ConnectionSQLite.connect();
+		try {
+			PreparedStatement st = conn.prepareStatement(statement);
+			st.setString(1, DateParserSQLite.parseDate(beginDate));
+			st.setString(2, DateParserSQLite.parseDate(endDate));
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				LocalDate day = DateParserSQLite.parseString(rs.getString(1));
+				Double total = rs.getDouble(2);
+				if(inc.containsKey(day)) {
+					inc.put(day, inc.get(day) + total);
+				}
+				else {
+					inc.put(day, total);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new TeacherSQLException("Hubo un error al intentar obtener el total de ganancias", e);
+		} finally {
+			ConnectionSQLite.disconnect(conn);
+		}
+		return inc;
+	}
+	@Override
+	public Map<EducationLevel, Double> getTeacherIncomePerLevel(LocalDate beginDate, LocalDate endDate) throws ConnectionException, TeacherSQLException {
+		Map<EducationLevel, Double> inc = new HashMap<>();
+		String statement = "SELECT Commission.total, "
+				+ "(SELECT Student.education_level FROM Student "
+				+ "INNER JOIN Payment ON Student.id=Payment.id_student "
+				+ "WHERE Payment.id_lesson=Lesson.id LIMIT 1) "
+				+ "FROM Commission INNER JOIN Lesson ON Lesson.id=Commission.id_lesson "
+				+ "WHERE Commission.paid=1 AND Lesson.day BETWEEN ? AND ? AND Commission.id_teacher!=1";
+		Connection conn = ConnectionSQLite.connect();
+		try {
+			PreparedStatement st = conn.prepareStatement(statement);
+			st.setString(1, DateParserSQLite.parseDate(beginDate));
+			st.setString(2, DateParserSQLite.parseDate(endDate));
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				Double total = rs.getDouble(1);
+				EducationLevel level = EducationLevel.valueOf(rs.getString(2));
+				if(inc.containsKey(level)) {
+					inc.put(level, inc.get(level) + total);
+				}
+				else {
+					inc.put(level, total);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new TeacherSQLException("Hubo un error al intentar obtener el total de ganancias de los profesores", e);
+		} finally {
+			ConnectionSQLite.disconnect(conn);
+		}
+		return inc;
+	}
+	@Override
+	public Map<LocalDate, Double> getTeacherIncomePerTime(LocalDate beginDate, LocalDate endDate) throws ConnectionException, TeacherSQLException {
+		Map<LocalDate, Double> inc = new HashMap<>();
+		String statement = "SELECT Commission.total, Lesson.day "
+				+ "FROM Commission INNER JOIN Lesson ON Lesson.id=Commission.id_lesson "
+				+ "WHERE Commission.paid=1 AND Lesson.day BETWEEN ? AND ? AND Commission.id_teacher!=1";
+		Connection conn = ConnectionSQLite.connect();
+		try {
+			PreparedStatement st = conn.prepareStatement(statement);
+			st.setString(1, DateParserSQLite.parseDate(beginDate));
+			st.setString(2, DateParserSQLite.parseDate(endDate));
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				Double total = rs.getDouble(1);
+				LocalDate day = DateParserSQLite.parseString(rs.getString(2));
+				if(inc.containsKey(day)) {
+					inc.put(day, inc.get(day) + total);
+				}
+				else {
+					inc.put(day, total);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new TeacherSQLException("Hubo un error al intentar obtener el total de ganancias de los profesores", e);
+		} finally {
+			ConnectionSQLite.disconnect(conn);
+		}
+		return inc;
+	}
+	
 	public static void main(String[] args) throws SQLException {
 		Connection conn = ConnectionSQLite.connect();
 		System.out.println(conn.isClosed());
-		Teacher teacher = new Teacher("Holas", "Chasau", LocalDate.now(), "223");
-		Teacher teacher2 = new Teacher("Holas", "Chasau", LocalDate.now(), "123");
+		//Teacher teacher = new Teacher("Holas", "Chasau", LocalDate.now(), "223");
+		//Teacher teacher2 = new Teacher("Holas", "Chasau", LocalDate.now(), "123");
 		TeacherDao teacherDao = new TeacherDaoSQLite();
 		// teacherDao.createTeacher(teacher);
 		// teacherDao.modifyTeacher(teacher2);

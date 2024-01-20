@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<GridPane hgap="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" vgap="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tutormanagement.controller.view.StatsScreenController">
+<GridPane fx:id="gridPane" hgap="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../css/StatsScreen.css" vgap="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tutormanagement.controller.view.StatsScreenController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -39,7 +39,10 @@
             <MFXButton fx:id="searchButton" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" maxHeight="1.7976931348623157E308" prefHeight="32.0" prefWidth="32.0" text="Buscar" />
          </children>
       </HBox>
-      <StackPane fx:id="stackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
+      <StackPane fx:id="stackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+         <children>
+            <HBox fx:id="statHbox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" />
+         </children></StackPane>
    </children>
    <padding>
       <Insets bottom="30.0" left="30.0" right="30.0" top="20.0" />

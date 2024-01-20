@@ -41,6 +41,7 @@ public class SubjectDaoSQLite implements SubjectDao {
 			st.setString(1, subject.getName());
 			st.execute();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new SubjectSQLException("Hubo un error al intentar eliminar la materia", e);
 		} finally {
 			ConnectionSQLite.disconnect(conn);
@@ -64,6 +65,7 @@ public class SubjectDaoSQLite implements SubjectDao {
 				subjects.add(subject);
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new SubjectSQLException("Hubo un error al intentar obtener todas las materias", e);
 		} finally {
 			ConnectionSQLite.disconnect(conn);

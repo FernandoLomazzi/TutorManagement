@@ -6,8 +6,10 @@ To do:
 	- Check lesson state usages.
 	- Add default/cancel button fxml
 	- Improve exceptions
+	
 Issues:
 	- Table could exceed screen
+	- Student Level may be a subject property
 
 Checks:
 	- make alert close before code

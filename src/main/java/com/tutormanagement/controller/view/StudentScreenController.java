@@ -20,6 +20,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXTableColumn;
+import io.github.palexdev.materialfx.controls.MFXTableRow;
 import io.github.palexdev.materialfx.controls.MFXTableView;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
@@ -35,6 +36,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -65,7 +67,7 @@ public class StudentScreenController implements Initializable {
 	private MFXTableView<Student> studentTable;
 	@FXML
 	private MFXTextField surnameField;
-	@FXML
+	@FXML 
 	private MFXButton reportButton;
 
 	private ObservableList<Student> students;
@@ -118,10 +120,18 @@ public class StudentScreenController implements Initializable {
 		birthdayColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getBirthday));
 		socialMediaColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getSocialMedia));
 		levelColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getEducationLevelInitial));
-
+		
 		studentTable.getTableColumns().addAll(nameColumn, surnameColumn, addressColumn, phoneNumberColumn,
 				birthdayColumn, socialMediaColumn, levelColumn);
-
+		studentTable.setTableRowFactory(f ->  {
+			MFXTableRow<Student> trf = new MFXTableRow<Student>(studentTable, f);
+			Tooltip tooltip = new Tooltip(f.getDescription());
+			// previsional
+			tooltip.setStyle("-fx-font-size: 20");
+			Tooltip.install(trf, tooltip);
+			return trf;
+        });
+		
 		studentTable.getFilters().addAll(new StringFilter<>("Nombre", Student::getName),
 				new StringFilter<>("Apellido", Student::getSurname),
 				new EnumFilter<>("Nivel", Student::getEducationLevel, EducationLevel.class));
