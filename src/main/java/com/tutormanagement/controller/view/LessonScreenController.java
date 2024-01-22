@@ -144,24 +144,22 @@ public class LessonScreenController implements Initializable {
 
 			@Override
 			public void update(StudentView student) {
+				System.out.println("Selected: "+student.getName()+" "+student.isSelected());
 				selectedCheck.setSelected(student.isSelected());
-				selectedCheck.setOnAction(event -> {
-					student.setSelected(selectedCheck.isSelected());
-				});
+				selectedCheck.setOnAction(event -> student.setSelected(selectedCheck.isSelected()));
 			}
 		});
 		paidColumn.setRowCellFactory(device -> new MFXTableRowCell<>(s -> "") {
-			final MFXCheckbox selectedCheck = new MFXCheckbox();
+			final MFXCheckbox paidCheck = new MFXCheckbox();
 			{
-				setGraphic(selectedCheck);
+				setGraphic(paidCheck);			
 			}
 
 			@Override
 			public void update(StudentView student) {
-				selectedCheck.setSelected(student.isPaid());
-				selectedCheck.setOnAction(event -> {
-					student.setPaid(selectedCheck.isSelected());
-				});
+				System.out.println("PAID: "+student.getName()+" "+student.isPaid());
+				paidCheck.setSelected(student.isPaid());
+				paidCheck.setOnAction(event -> student.setPaid(paidCheck.isSelected()));
 			}
 		});
 
@@ -206,7 +204,12 @@ public class LessonScreenController implements Initializable {
 			List<Payment> payments = new ArrayList<>();
 			studentTable.getCells().forEach((number, row) -> {
 				StudentView s = row.getData();
+				if(!s.isSelected().equals(((MFXCheckbox) row.getCells().get(3).getGraphic()).isSelected())) {
+					AlertManager.createError("Error", "Error de consistencia", borderPane);
+					return;
+				}
 				if (s.isSelected()) {
+					System.out.println(s.getName());
 					Student student = new Student(s.getName(), s.getSurname(), s.getAddress(), s.getPhoneNumber(),
 							s.getBirthday(), s.getSocialMedia(), s.getDescription(), s.getEducationLevel());
 					Payment payment = new Payment(student, lesson, s.isPaid(), s.isPaid());
@@ -233,41 +236,49 @@ public class LessonScreenController implements Initializable {
 					pricePerHourTeacherField);
 			teacherPaidToggle.setSelected(false);
 			studentTable.getCells().forEach((number, row) -> {
+				StudentView sv = row.getData();
+				sv.setSelected(false);
+				sv.setPaid(false);				
 				((MFXCheckbox) row.getCells().get(3).getGraphic()).setSelected(false);
 				((MFXCheckbox) row.getCells().get(4).getGraphic()).setSelected(false);
 			});
 		} catch (SQLException e) {
 			AlertManager.createError("ERROR " + e.getErrorCode(), e.getMessage(), borderPane);
 		}
-
 	}
 
 	private class StudentView extends Student {
-		private Boolean isSelected;
-		private Boolean isPaid;
+		private SimpleBooleanProperty isSelected = new SimpleBooleanProperty();
+		private SimpleBooleanProperty isPaid = new SimpleBooleanProperty();
 
 		public StudentView(Student student) {
 			super(student.getName(), student.getSurname(), student.getAddress(), student.getPhoneNumber(),
 					student.getBirthday(), student.getSocialMedia(), student.getDescription(),
 					student.getEducationLevel());
-			isSelected = false;
-			isPaid = false;
+			isSelected.setValue(false);
+			isPaid.setValue(false);
 		}
 
 		public Boolean isSelected() {
-			return isSelected;
+			return isSelected.getValue();
 		}
 
 		public Boolean isPaid() {
-			return isPaid;
+			return isPaid.getValue();
 		}
 
 		public void setSelected(Boolean selected) {
-			isSelected = selected;
+			isSelected.setValue(selected);
 		}
 
 		public void setPaid(Boolean paid) {
-			isPaid = paid;
+			isPaid.setValue(paid);
+		}
+		public SimpleBooleanProperty getSelectedProperty() {
+			return isSelected;
+		}
+		public SimpleBooleanProperty getPaidProperty() {
+			return isPaid;
 		}
 	}
 }

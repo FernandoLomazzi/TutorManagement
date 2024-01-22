@@ -15,8 +15,8 @@
 
 #### Non-Functional
 - NFR-1: The system should be able to handle a minimum of 500 students and 100 teachers.
-- NFR-1: The system should process reports within 3 seconds.
-- NFR-1: The system must allow migrating existing data from an Excel spreadsheet.
+- NFR-2: The system should process reports within 3 seconds.
+- NFR-3: The system must allow migrating existing data from an Excel spreadsheet.
 
 ### Entity-Relationship Diagram
 ![](/docs/EntityRelationshipDiagram.png)
