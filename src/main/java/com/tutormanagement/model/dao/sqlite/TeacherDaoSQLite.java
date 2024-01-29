@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.tutormanagement.model.EducationLevel;
 import com.tutormanagement.model.Teacher;
@@ -20,7 +21,7 @@ import com.tutormanagement.model.dao.exception.TeacherSQLException;
 public class TeacherDaoSQLite implements TeacherDao {
 	@Override
 	public Map<String, List<TeacherReport>> getUnpaidTeachers() throws ConnectionException, TeacherSQLException {
-		Map<String, List<TeacherReport>> teachersReport = new HashMap<>();
+		Map<String, List<TeacherReport>> teachersReport = new TreeMap<>();
 		String statement = "SELECT\r\n" + "    Teacher.name,\r\n" + "    Teacher.surname,\r\n"
 				+ "    Commission.total,\r\n" + "    Lesson.id,\r\n" + "    Lesson.day,\r\n"
 				+ "    Lesson.total_hours,\r\n" + "    Subject.name,\r\n" + "    Institution.name\r\n" + "FROM\r\n"

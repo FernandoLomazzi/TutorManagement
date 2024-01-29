@@ -28,11 +28,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
@@ -79,7 +81,8 @@ public class StudentReportScreenController implements Initializable {
 						Comparator.comparing(StudentReport::getSubjectName));
 				MFXTableColumn<StudentReport> institutionColumn = new MFXTableColumn<>("Institución", true,
 						Comparator.comparing(StudentReport::getInstitutionName));
-				MFXTableColumn<StudentReport> totalColumn = new MFXTableColumn<>("Total ($)", true,
+				Double total = studentReport.stream().mapToDouble(StudentReport::getTotal).sum();
+				MFXTableColumn<StudentReport> totalColumn = new MFXTableColumn<>("Total ($"+total+")", true,
 						Comparator.comparing(StudentReport::getTotal));
 
 				MFXTableColumn<StudentReport> notifiedColumn = new MFXTableColumn<>("Notificado", false,
@@ -158,7 +161,11 @@ public class StudentReportScreenController implements Initializable {
 				table.setItems(studentItems);
 				table.prefHeightProperty().bind(Bindings.size(studentItems).multiply(35).add(50));
 				vBoxInternal.getChildren().addAll(hBox, table);
-				vBox.getChildren().add(vBoxInternal);
+				StackPane pane = new StackPane();
+				pane.getChildren().setAll(vBoxInternal);
+				pane.getStyleClass().add("stack-pane");
+				pane.setPadding(new Insets(20, 20, 20, 20));
+				vBox.getChildren().add(pane);
 			});
 		} catch (SQLException e) {
 			AlertManager.createError("ERROR " + e.getErrorCode(), e.getMessage(), gridPane);

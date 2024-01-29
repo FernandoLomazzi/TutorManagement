@@ -2,7 +2,7 @@ package com.tutormanagement.model;
 
 import java.time.LocalDate;
 
-public class StudentReport {
+public class StudentReport implements Comparable<StudentReport>{
 	private String studentName, studentSurname;
 	private String teacherName, teacherSurname, subjectName, institutionName;
 	private LocalDate day;
@@ -76,5 +76,10 @@ public class StudentReport {
 
 	public String getStudentSurname() {
 		return studentSurname;
+	}
+
+	@Override
+	public int compareTo(StudentReport o) {
+		return this.getStudentCompleteName().compareTo(o.getStudentCompleteName());
 	}
 }

@@ -24,84 +24,86 @@
       <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
   </rowConstraints>
    <children>
-      <StackPane>
-         <children>
-            <VBox alignment="TOP_CENTER" spacing="20.0">
-               <children>
-                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Creación de institución">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <MFXTextField fx:id="instNameField" floatMode="BORDER" floatingText="Nombre" prefWidth="200.0" />
-                  <HBox alignment="TOP_CENTER" spacing="20.0">
-                     <children>
-                        <MFXButton fx:id="addInstButton" buttonType="RAISED" onAction="#createInstitution" text="Agregar" />
-                        <MFXButton fx:id="deleteInstButton" buttonType="RAISED" onAction="#deleteInstitution" text="Eliminar" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </children>
+      <StackPane styleClass="stack-pane" GridPane.columnSpan="2" GridPane.rowSpan="2">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
       </StackPane>
-      <StackPane GridPane.columnIndex="1">
+      <VBox alignment="TOP_CENTER" spacing="20.0">
          <children>
-            <VBox alignment="TOP_CENTER" spacing="20.0">
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Creación de institución">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <MFXTextField fx:id="instNameField" floatMode="BORDER" floatingText="Nombre" prefWidth="200.0" />
+            <HBox alignment="TOP_CENTER" spacing="20.0">
                <children>
-                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Creación de materias">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <HBox alignment="CENTER_LEFT" spacing="20.0">
-                     <children>
-                        <MFXTextField fx:id="subNameField" floatMode="BORDER" floatingText="Nombre" prefWidth="200.0" />
-                        <MFXFilterComboBox fx:id="subInstField" floatMode="BORDER" floatingText="Institución" maxHeight="1.7976931348623157E308" prefWidth="200.0" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" spacing="20.0">
-                     <children>
-                        <MFXButton fx:id="addSubButton" buttonType="RAISED" onAction="#createSubject" text="Agregar" />
-                        <MFXButton fx:id="deleteSubButton" buttonType="RAISED" onAction="#deleteSubject" text="Eliminar" />
-                     </children>
-                  </HBox>
+                  <MFXButton fx:id="addInstButton" buttonType="RAISED" onAction="#createInstitution" text="Agregar" />
+                  <MFXButton fx:id="deleteInstButton" buttonType="RAISED" onAction="#deleteInstitution" text="Eliminar" />
                </children>
-            </VBox>
+            </HBox>
          </children>
-      </StackPane>
-      <StackPane GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets left="10.0" top="10.0" />
+         </GridPane.margin>
+      </VBox>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" GridPane.rowIndex="1">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
-               <children>
-                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Instituciones">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <MFXTableView fx:id="instTable" maxHeight="1.7976931348623157E308" maxWidth="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin></MFXTableView>
-               </children>
-            </VBox>
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Instituciones">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <MFXTableView fx:id="instTable" maxHeight="1.7976931348623157E308" maxWidth="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </MFXTableView>
          </children>
-      </StackPane>
-      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets bottom="20.0" left="10.0" />
+         </GridPane.margin>
+      </VBox>
+      <VBox alignment="TOP_CENTER" spacing="20.0" GridPane.columnIndex="1">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Creación de materias">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
                <children>
-                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Materias">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <MFXTableView fx:id="subTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                  <MFXTextField fx:id="subNameField" floatMode="BORDER" floatingText="Nombre" prefWidth="200.0" />
+                  <MFXFilterComboBox fx:id="subInstField" floatMode="BORDER" floatingText="Institución" maxHeight="1.7976931348623157E308" prefWidth="200.0" />
                </children>
-            </VBox>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+               <children>
+                  <MFXButton fx:id="addSubButton" buttonType="RAISED" onAction="#createSubject" text="Agregar" />
+                  <MFXButton fx:id="deleteSubButton" buttonType="RAISED" onAction="#deleteSubject" text="Eliminar" />
+               </children>
+            </HBox>
          </children>
-      </StackPane>
+         <GridPane.margin>
+            <Insets right="20.0" top="10.0" />
+         </GridPane.margin>
+      </VBox>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Materias">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <MFXTableView fx:id="subTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+         </children>
+         <GridPane.margin>
+            <Insets bottom="20.0" right="20.0" />
+         </GridPane.margin>
+      </VBox>
    </children>
    <padding>
-      <Insets bottom="30.0" left="30.0" right="30.0" top="20.0" />
+      <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
    </padding>
 </GridPane>

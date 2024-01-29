@@ -121,6 +121,7 @@ public class LessonScreenController implements Initializable {
 	}
 
 	private void setupTable() {
+		
 		MFXTableColumn<StudentView> nameColumn = new MFXTableColumn<>("Nombre", true,
 				Comparator.comparing(Student::getName));
 		MFXTableColumn<StudentView> surnameColumn = new MFXTableColumn<>("Apellido", true,
@@ -168,7 +169,7 @@ public class LessonScreenController implements Initializable {
 		studentTable.getFilters().addAll(new StringFilter<>("Nombre", Student::getName),
 				new StringFilter<>("Apellido", Student::getSurname),
 				new EnumFilter<>("Nivel", Student::getEducationLevel, EducationLevel.class));
-		studentTable.setFooterVisible(true);
+		
 	}
 
 	private Boolean checkFieldConstraints() {
@@ -221,7 +222,7 @@ public class LessonScreenController implements Initializable {
 				AlertManager.createError("Error", "Seleccione al menos un alumno para crear una clase", borderPane);
 				return;
 			}
-			Double totalTeacher = totalHours * pricePerHourTeacher;
+			Double totalTeacher = totalHours * pricePerHourTeacher * payments.size();
 			Commission comm = new Commission(lesson, teacher, pricePerHourTeacher, totalTeacher, paidTeacher);
 			lesson.setDay(day);
 			lesson.setPayment(payments);

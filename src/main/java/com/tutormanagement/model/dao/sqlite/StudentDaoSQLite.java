@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.tutormanagement.model.EducationLevel;
 import com.tutormanagement.model.Student;
@@ -20,7 +20,7 @@ import com.tutormanagement.model.dao.exception.StudentSQLException;
 public class StudentDaoSQLite implements StudentDao {
 	@Override
 	public Map<String, List<StudentReport>> getUnpaidStudents() throws ConnectionException, StudentSQLException {
-		Map<String, List<StudentReport>> studentsReport = new HashMap<>();
+		Map<String, List<StudentReport>> studentsReport = new TreeMap<>();
 		String statement = "SELECT\r\n" + "    Student.name,\r\n" + "    Student.surname,\r\n" + "    Lesson.id, \r\n"
 				+ "    Lesson.total_hours,\r\n" + "    Lesson.day,\r\n" + "    Lesson.price_per_hour,\r\n"
 				+ "    Teacher.name,\r\n" + "    Teacher.surname,\r\n" + "    Subject.name,\r\n"

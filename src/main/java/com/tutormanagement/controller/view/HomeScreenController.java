@@ -17,6 +17,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.CacheHint;
@@ -29,6 +30,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -87,16 +89,6 @@ public class HomeScreenController implements Initializable {
 		initializeLoader();
 
 		ScrollUtils.addSmoothScrolling(scrollPane);
-
-		/*
-		 * Image image = new Image(MFXDemoResourcesLoader.load("logo_alt.png"), 64, 64,
-		 * true, true); ImageView logo = new ImageView(image); Circle clip = new
-		 * Circle(30);
-		 * clip.centerXProperty().bind(logo.layoutBoundsProperty().map(Bounds::
-		 * getCenterX));
-		 * clip.centerYProperty().bind(logo.layoutBoundsProperty().map(Bounds::
-		 * getCenterY)); logo.setClip(clip); logoContainer.getChildren().add(logo);
-		 */
 	}
 
 	public void setContentPane(Pane pane) {

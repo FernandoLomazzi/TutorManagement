@@ -1,21 +1,3 @@
-/*
- * Copyright (C) 2022 Parisi Alessandro
- * This file is part of MaterialFX (https://github.com/palexdev/MaterialFX).
- *
- * MaterialFX is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * MaterialFX is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with MaterialFX.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 @import 'MFXColors.css';
 
 /**************************************************
@@ -77,13 +59,9 @@
 	-fx-text-fill: white;
 }
 
-.rootPane .sidebar .header .mfx-font-icon {
-	-mfx-color: white;
-}
-
 .rootPane .sidebar .mfx-scroll-pane {
 	-fx-background-color: transparent;
-
+	
 	-track-color: rgba(255, 255, 255, 0.3);
 	-thumb-color: white;
 	-thumb-hover-color: white;
@@ -118,14 +96,111 @@
 .rootPane .sidebar .navbar .mfx-rectangle-toggle-node:selected {
 	-fx-background-color: white;
 	-fx-background-radius: 5;
-	-fx-text-fill: #601cbe;
+	-fx-text-fill: -mfx-purple;
 }
 
 .rootPane .sidebar .navbar .mfx-rectangle-toggle-node:selected .selection-rectangle {
 	-fx-stroke: transparent;
-	-fx-fill: #601cbe;
+	-fx-fill: -mfx-purple;
 }
 
 .rootPane .sidebar .navbar .mfx-rectangle-toggle-node:selected .mfx-icon-wrapper .mfx-font-icon {
-	-mfx-color: #601cbe;
+	-mfx-color: -mfx-purple;
+}
+
+.mfx-font-icon{
+	-mfx-color: -mfx-purple;
+}
+/*
+ * Text Area JAVAFX 
+ */
+.text-area:focused{
+	-fx-background-color: -mfx-purple;
+}
+
+/*
+ * Combobox MaterialFX
+ */
+.mfx-combo-box .virtual-flow .mfx-combo-box-cell:hover {
+	-fx-background-color: derive(-mfx-purple, 100%);
+}
+.mfx-combo-box .virtual-flow .mfx-combo-box-cell:selected {
+	-fx-background-color: derive(-mfx-purple, 80%);
+}
+
+/*
+ * Table View MaterialFX
+ */
+.mfx-table-view .virtual-flow .mfx-table-row:hover{
+	-fx-background-color: derive(-mfx-purple, 100%);
+}
+.mfx-table-view .virtual-flow .mfx-table-row:selected{
+	-fx-background-color: derive(-mfx-purple, 80%);
+}
+
+/*
+ * FilterPane MaterialFX
+*/
+.mfx-filter-pane{
+	-fx-background-color: -mfx-purple;
+}
+/*
+ * Button MaterialFX 
+ */
+.mfx-button{
+	-fx-border-radius: 3;
+	-fx-border-color: -mfx-purple;
+	-fx-text-fill: -mfx-purple;
+	-mfx-button-type: FLAT;
+	-fx-background-color: transparent;
+}
+/*
+ * Toggle MaterialFX 
+ */
+.mfx-rectangle-toggle-node:selected{
+	-fx-background-color: -mfx-purple;
+	-fx-text-fill: white;
+}
+
+/*
+ * TextField MaterialFX 
+ */
+.mfx-text-field{
+	-mfx-main: -mfx-purple;
+}
+/*
+ * Stack Pane JavaFX 
+ */
+.stack-pane{
+	-fx-background-color: white;
+	-fx-background-radius: 10;
+	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.12, -1.0, 2.0);
+}
+/*
+ * DatePicker MaterialFX 
+ */
+.mfx-date-picker .date-picker-popup .mfx-date-cell:selected{
+	-fx-background-color: -mfx-purple;
+}
+
+/*
+ * Header text 
+ */
+.header-label {
+	-fx-font-family: 'Open Sans Bold';
+	-fx-font-size: 14;
+	-fx-text-fill: -mfx-text-he;
+}
+
+.header-label .text {
+	-fx-font-smoothing-type: lcd;
+}
+
+.sub-header-label {
+	-fx-font-family: 'Open Sans SemiBold';
+	-fx-text-fill: -mfx-text-he;
+}
+
+.sub-header-label .text {
+	-fx-font-smoothing-type: lcd;
 }

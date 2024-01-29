@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
-public class TeacherReport {
+public class TeacherReport implements Comparable<TeacherReport>{
 	String teacherName, teacherSurname;
 	Double total, totalHours;
 	Integer lessonID;
@@ -75,6 +75,14 @@ public class TeacherReport {
 
 	public void addStudent(String name) {
 		students.add(name);
+	}
+
+	public String getTeacherFullName() {
+		return teacherName+" "+teacherSurname;
+	}
+	@Override
+	public int compareTo(TeacherReport o) {
+		return this.getTeacherFullName().compareTo(o.getTeacherFullName());
 	}
 
 }

@@ -29,6 +29,7 @@ import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
 import io.github.palexdev.materialfx.filter.EnumFilter;
 import io.github.palexdev.materialfx.filter.StringFilter;
 import io.github.palexdev.materialfx.utils.others.observables.When;
+import io.github.palexdev.mfxcore.utils.fx.ScrollUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -76,8 +77,8 @@ public class StudentScreenController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		setupFields();
 		setupTable();
-		studentTable.autosizeColumnsOnInitialization();
-		When.onChanged(studentTable.tableRowFactoryProperty()).then((o, n) -> studentTable.autosizeColumns()).listen();
+		//studentTable.autosizeColumnsOnInitialization();
+		//When.onChanged(studentTable.tableRowFactoryProperty()).then((o, n) -> studentTable.autosizeColumns()).listen();
 		StudentController studentController = StudentController.getInstance();
 		try {
 			students = FXCollections.observableArrayList(studentController.getAllStudents());

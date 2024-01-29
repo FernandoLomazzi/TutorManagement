@@ -16,7 +16,7 @@
 
 <BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tutormanagement.controller.view.LessonScreenController">
    <center>
-      <StackPane>
+      <StackPane styleClass="stack-pane">
          <children>
             <VBox spacing="20.0" StackPane.alignment="TOP_CENTER">
                <children>
@@ -54,9 +54,12 @@
                </children>
             </VBox>
          </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="20.0" left="40.0" right="20.0" top="10.0" />
+         </padding>
       </StackPane>
    </center>
-   <padding>
-      <Insets bottom="30.0" left="60.0" right="30.0" top="20.0" />
-   </padding>
 </BorderPane>
