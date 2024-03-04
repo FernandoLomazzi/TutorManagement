@@ -168,6 +168,9 @@
 .mfx-text-field{
 	-mfx-main: -mfx-purple;
 }
+.mfx-text-field:invalid{
+	-fx-border-color: -mfx-red;
+}
 /*
  * Stack Pane JavaFX 
  */
