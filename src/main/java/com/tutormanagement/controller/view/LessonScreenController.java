@@ -36,12 +36,12 @@ import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
 import io.github.palexdev.materialfx.filter.EnumFilter;
 import io.github.palexdev.materialfx.filter.StringFilter;
 import io.github.palexdev.materialfx.utils.others.observables.When;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 
 public class LessonScreenController implements Initializable {
@@ -82,7 +82,6 @@ public class LessonScreenController implements Initializable {
 			students = FXCollections.observableArrayList(studentController.getAllStudents().stream()
 					.map(student -> new StudentView(student)).collect(Collectors.toList()));
 			studentTable.setItems(students);
-
 			SubjectController subjectController = SubjectController.getInstance();
 			subjects = FXCollections.observableArrayList(subjectController.getAllSubjects());
 			subjectField.setItems(subjects);
@@ -136,34 +135,19 @@ public class LessonScreenController implements Initializable {
 		nameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getName));
 		surnameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getSurname));
 		levelColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getEducationLevelInitial));
-
-		selectionColumn.setRowCellFactory(device -> new MFXTableRowCell<>(s -> "") {
-			final MFXCheckbox selectedCheck = new MFXCheckbox();
-			{
-				setGraphic(selectedCheck);
-			}
-
+		
+		selectionColumn.setRowCellFactory(device -> new MFXTableRowCell<>(StudentView::isSelected){
 			@Override
 			public void update(StudentView student) {
-				System.out.println("Selected: "+student.getName()+" "+student.isSelected());
-				selectedCheck.setSelected(student.isSelected());
-				selectedCheck.setOnAction(event -> student.setSelected(selectedCheck.isSelected()));
+				setGraphic(student.getSelectionBox());
 			}
 		});
-		paidColumn.setRowCellFactory(device -> new MFXTableRowCell<>(s -> "") {
-			final MFXCheckbox paidCheck = new MFXCheckbox();
-			{
-				setGraphic(paidCheck);			
-			}
-
+		paidColumn.setRowCellFactory(device -> new MFXTableRowCell<>(StudentView::isPaid){
 			@Override
 			public void update(StudentView student) {
-				System.out.println("PAID: "+student.getName()+" "+student.isPaid());
-				paidCheck.setSelected(student.isPaid());
-				paidCheck.setOnAction(event -> student.setPaid(paidCheck.isSelected()));
+				setGraphic(student.getPaidBox());
 			}
 		});
-
 		studentTable.getTableColumns().addAll(nameColumn, surnameColumn, levelColumn, selectionColumn, paidColumn);
 
 		studentTable.getFilters().addAll(new StringFilter<>("Nombre", Student::getName),
@@ -203,19 +187,13 @@ public class LessonScreenController implements Initializable {
 			LessonController lessonController = LessonController.getInstance();
 			Lesson lesson = new Lesson();
 			List<Payment> payments = new ArrayList<>();
-			studentTable.getCells().forEach((number, row) -> {
-				StudentView s = row.getData();
-				if(!s.isSelected().equals(((MFXCheckbox) row.getCells().get(3).getGraphic()).isSelected())) {
-					AlertManager.createError("Error", "Error de consistencia", borderPane);
-					return;
-				}
-				if (s.isSelected()) {
-					System.out.println(s.getName());
+			
+			studentTable.getItems().forEach(s -> {
+				if(s.isSelected()) {
 					Student student = new Student(s.getName(), s.getSurname(), s.getAddress(), s.getPhoneNumber(),
 							s.getBirthday(), s.getSocialMedia(), s.getDescription(), s.getEducationLevel());
 					Payment payment = new Payment(student, lesson, s.isPaid(), s.isPaid());
 					payments.add(payment);
-					System.out.println(student.getName() + " " + payment.isPaid());
 				}
 			});
 			if (payments.isEmpty()) {
@@ -231,17 +209,18 @@ public class LessonScreenController implements Initializable {
 			lesson.setTotalHours(totalHours);
 			lesson.setCommission(comm);
 			lessonController.createLesson(lesson);
-
+			System.out.println("------");
+			for(Student s: lesson.getStudents()) {
+				System.out.println(s.getName() + " " + s.getSurname());
+			}
+			System.out.println("------");
 			AlertManager.createInformation("Éxito", "La clase se ha creado exitosamente", borderPane);
 			MaterialFXManager.clearAllFields(subjectField, pricePerHourField, totalHoursField, dateField, teacherField,
 					pricePerHourTeacherField);
 			teacherPaidToggle.setSelected(false);
-			studentTable.getCells().forEach((number, row) -> {
-				StudentView sv = row.getData();
-				sv.setSelected(false);
-				sv.setPaid(false);				
-				((MFXCheckbox) row.getCells().get(3).getGraphic()).setSelected(false);
-				((MFXCheckbox) row.getCells().get(4).getGraphic()).setSelected(false);
+			studentTable.getItems().forEach(s -> {
+				s.setSelected(false);
+				s.setPaid(false);
 			});
 		} catch (SQLException e) {
 			AlertManager.createError("ERROR " + e.getErrorCode(), e.getMessage(), borderPane);
@@ -249,37 +228,33 @@ public class LessonScreenController implements Initializable {
 	}
 
 	private class StudentView extends Student {
-		private SimpleBooleanProperty isSelected = new SimpleBooleanProperty();
-		private SimpleBooleanProperty isPaid = new SimpleBooleanProperty();
-
+		private MFXCheckbox selectedCheck = new MFXCheckbox();
+		private MFXCheckbox paidCheck = new MFXCheckbox();
+		
 		public StudentView(Student student) {
 			super(student.getName(), student.getSurname(), student.getAddress(), student.getPhoneNumber(),
 					student.getBirthday(), student.getSocialMedia(), student.getDescription(),
 					student.getEducationLevel());
-			isSelected.setValue(false);
-			isPaid.setValue(false);
 		}
 
 		public Boolean isSelected() {
-			return isSelected.getValue();
+			return selectedCheck.isSelected();
 		}
-
+		public void setSelected(Boolean v) {
+			selectedCheck.setSelected(v);
+		}
+		public MFXCheckbox getSelectionBox() {
+			return selectedCheck;
+		}
+		
 		public Boolean isPaid() {
-			return isPaid.getValue();
+			return paidCheck.isSelected();
 		}
-
-		public void setSelected(Boolean selected) {
-			isSelected.setValue(selected);
+		public void setPaid(Boolean v) {
+			paidCheck.setSelected(v);
 		}
-
-		public void setPaid(Boolean paid) {
-			isPaid.setValue(paid);
-		}
-		public SimpleBooleanProperty getSelectedProperty() {
-			return isSelected;
-		}
-		public SimpleBooleanProperty getPaidProperty() {
-			return isPaid;
+		public MFXCheckbox getPaidBox() {
+			return paidCheck;
 		}
 	}
 }

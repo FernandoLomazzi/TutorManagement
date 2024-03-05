@@ -117,7 +117,13 @@
 .text-area:focused{
 	-fx-background-color: -mfx-purple;
 }
-
+/*
+ * Checkbox MaterialFX
+ */
+ .mfx-checkbox .box .mark{
+ 	-mfx-color: white;
+ 	
+ }
 /*
  * Combobox MaterialFX
  */

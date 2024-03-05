@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tutormanagement.controller.view.LessonScreenController">
+<BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tutormanagement.controller.view.LessonScreenController">
    <center>
       <StackPane styleClass="stack-pane">
          <children>
@@ -45,7 +45,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <MFXTableView fx:id="studentTable" footerVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="373.0" prefWidth="464.0" VBox.vgrow="ALWAYS" />
+                  <MFXTableView fx:id="studentTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="373.0" prefWidth="464.0" VBox.vgrow="ALWAYS" />
                   <HBox alignment="TOP_RIGHT" maxWidth="1.7976931348623157E308" spacing="20.0">
                      <children>
                         <MFXButton fx:id="createButton" buttonType="RAISED" onAction="#createLesson" text="Agregar" />
