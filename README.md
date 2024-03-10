@@ -1,5 +1,17 @@
 # TutorManagement
 
+### Preview
+
+https://github.com/FernandoLomazzi/TutorManagement/assets/78239004/e61abb1f-c7a4-4ff8-ae8f-50c68d227a22
+
+### Build
+
+To build TutorManagement, execute the following command:
+
+    mvn package
+    
+**NOTE**: TutorManagement requires **Java 17** and above.
+
 ### Requeriments
 
 #### Functional
