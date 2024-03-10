@@ -63,6 +63,7 @@ public class StatsScreenController implements Initializable {
                 return null;
             }
 		});
+		
 		typeField.setItems(FXCollections.observableArrayList(StatType.values()));
 		
 		searchButton.setGraphic(new MFXIconWrapper("fas-magnifying-glass", 24, 32));

@@ -1,5 +1,6 @@
 package com.tutormanagement.controller.view;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -33,6 +34,7 @@ import io.github.palexdev.materialfx.controls.MFXTableColumn;
 import io.github.palexdev.materialfx.controls.MFXTableView;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
+import io.github.palexdev.materialfx.enums.SortState;
 import io.github.palexdev.materialfx.filter.EnumFilter;
 import io.github.palexdev.materialfx.filter.StringFilter;
 import io.github.palexdev.materialfx.utils.others.observables.When;
@@ -40,9 +42,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 public class LessonScreenController implements Initializable {
 	@FXML
@@ -65,11 +69,13 @@ public class LessonScreenController implements Initializable {
 	private MFXRectangleToggleNode teacherPaidToggle;
 	@FXML
 	private MFXTextField totalHoursField;
-
+	@FXML
+	private MFXButton backButton;	
+	
 	private ObservableList<StudentView> students;
 	private ObservableList<Subject> subjects;
 	private ObservableList<Teacher> teachers;
-
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		setupFields();
@@ -94,6 +100,18 @@ public class LessonScreenController implements Initializable {
 		}
 	}
 
+	@FXML
+	private void goBack(ActionEvent event) {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AllLessonScreen.fxml"));
+		try {
+			Pane root = loader.load();
+			((StackPane) borderPane.getParent()).getChildren().setAll(root);
+		} catch (IOException e) {
+			AlertManager.createError("ERROR",
+					"Hubo un error al intentar cargar la pantalla anterior\n" + e.getMessage(), borderPane);
+		}
+	}
+	
 	private void setupFields() {
 		ValidatorManager.notNullConstraint(subjectField);
 		ValidatorManager.notNullConstraint(pricePerHourField);
@@ -133,6 +151,7 @@ public class LessonScreenController implements Initializable {
 				Comparator.comparing(StudentView::isPaid));
 
 		nameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getName));
+		nameColumn.setSortState(SortState.ASCENDING);
 		surnameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getSurname));
 		levelColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Student::getEducationLevelInitial));
 		

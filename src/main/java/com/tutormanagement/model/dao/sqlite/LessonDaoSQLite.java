@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.tutormanagement.model.Lesson;
 import com.tutormanagement.model.Payment;
@@ -124,9 +127,19 @@ public class LessonDaoSQLite implements LessonDao {
 	}
 
 	@Override
-	public void deleteLesson(Lesson lesson) {
-		// TODO Auto-generated method stub
-
+	public void deleteLesson(Integer lessonID) throws ConnectionException, LessonSQLException {
+		String statement = "DELETE FROM Lesson WHERE Lesson.id=?";
+		Connection conn = ConnectionSQLite.connect();
+		try {
+			PreparedStatement st = conn.prepareStatement(statement);
+			st.setInt(1, lessonID);
+			st.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new LessonSQLException("Hubo un error al intentar eliminar la clase", e);
+		} finally {
+			ConnectionSQLite.disconnect(conn);
+		}
 	}
 
 	@Override
@@ -147,4 +160,98 @@ public class LessonDaoSQLite implements LessonDao {
 		}
 		return max_id + 1;
 	}
+	
+	@Override
+	public List<TeacherReport> getLessons() throws ConnectionException, LessonSQLException {
+		List<TeacherReport> teachersReport = new ArrayList<>();
+		String statement = "SELECT\r\n" + "    Teacher.name,\r\n" + "    Teacher.surname,\r\n"
+				+ "    Commission.total,\r\n" + "    Lesson.id,\r\n" + "    Lesson.day,\r\n"
+				+ "    Lesson.total_hours, Lesson.price_per_hour, \r\n" + "    Subject.name,\r\n" + "    Institution.name\r\n" + "FROM\r\n"
+				+ "    Commission\r\n" + "INNER JOIN\r\n" + "    Teacher ON Commission.id_teacher = Teacher.id\r\n"
+				+ "INNER JOIN\r\n" + "    Lesson ON Lesson.id = Commission.id_lesson\r\n" + "INNER JOIN\r\n"
+				+ "    Subject ON Lesson.id_subject = Subject.id\r\n" + "INNER JOIN\r\n"
+				+ "    Institution ON Subject.id_institution = Institution.id;";
+		Connection conn = ConnectionSQLite.connect();
+		try {
+			conn.setAutoCommit(false);
+			PreparedStatement st = conn.prepareStatement(statement);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				String teacherName, teacherSurname;
+
+				Double lessonTotalHours, pricePerHourStudent;
+				Integer lessonID;
+				LocalDate lessonDay;
+
+				String subjectName;
+				String instName;
+
+				Double commissionTotal;
+
+				teacherName = rs.getString(1);
+				teacherSurname = rs.getString(2);
+				commissionTotal = rs.getDouble(3);
+				lessonID = rs.getInt(4);
+				lessonDay = DateParserSQLite.parseString(rs.getString(5));
+				lessonTotalHours = rs.getDouble(6);
+				pricePerHourStudent = rs.getDouble(7);
+				subjectName = rs.getString(8);
+				instName = rs.getString(9);
+				TeacherReport teacherReport = new TeacherReport(teacherName, teacherSurname, commissionTotal, lessonID,
+						lessonDay, lessonTotalHours, pricePerHourStudent, subjectName, instName);
+				teachersReport.add(teacherReport);
+			}
+			String statementStudent = "SELECT Student.name, Student.surname FROM Student "
+					+ "INNER JOIN Payment ON Student.id=Payment.id_student WHERE Payment.id_lesson=?";
+			for (TeacherReport report : teachersReport) {
+				PreparedStatement stat = conn.prepareStatement(statementStudent);
+				stat.setInt(1, report.getLessonID());
+				ResultSet rset = stat.executeQuery();
+				while (rset.next()) {
+					String studentName = rset.getString(1);
+					String studentSurname = rset.getString(2);
+					report.addStudent(studentName + " " + studentSurname);
+				}
+			}
+			conn.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new LessonSQLException("Hubo un error al intentar obtener todas las clases", e);
+		} finally {
+			ConnectionSQLite.disconnect(conn);
+		}
+
+		return teachersReport;
+	}
+
+	@Override
+	public void modifyLesson(Integer idLesson, LocalDate day, Double totalHours, Double pricePerHour,
+			Double pricePerHourTeacher, Double total) throws ConnectionException, LessonSQLException{
+		String statementLesson = "UPDATE Lesson SET day=?, total_hours=?, price_per_hour=? "
+				+ "WHERE Lesson.id=?;";
+		String statementPayment = "UPDATE Commission SET price_per_hour=?, total=? "
+				+ "WHERE Commission.id_lesson=?";
+		Connection conn = ConnectionSQLite.connect();
+		try{
+			conn.setAutoCommit(false);
+			PreparedStatement stLesson = conn.prepareStatement(statementLesson);
+			stLesson.setString(1, DateParserSQLite.parseDate(day));
+			stLesson.setDouble(2, totalHours);
+			stLesson.setDouble(3, pricePerHour);
+			stLesson.setInt(4, idLesson);
+			stLesson.execute();
+			PreparedStatement stComm = conn.prepareStatement(statementPayment);
+			stComm.setDouble(1, pricePerHourTeacher);
+			stComm.setDouble(2, total);
+			stComm.setInt(3, idLesson);
+			stComm.execute();
+			conn.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new LessonSQLException("Hubo un error al intentar modificar esta clase", e);
+		} finally {
+			ConnectionSQLite.disconnect(conn);
+		}		
+	}
+	
 }

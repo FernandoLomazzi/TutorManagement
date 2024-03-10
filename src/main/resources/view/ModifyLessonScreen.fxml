@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXListView?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane fx:id="gridPane" hgap="20.0" maxHeight="1.7976931348623157E308" prefHeight="600.0" prefWidth="500.0" styleClass="grid-pane" stylesheets="@../css/HomeScreen.css" vgap="25.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tutormanagement.controller.view.ModifyLessonScreenController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Label text="Modificar clase" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <MFXListView fx:id="studentList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="lesson-list" GridPane.columnSpan="2" GridPane.rowIndex="5" GridPane.valignment="TOP">
+         <padding>
+            <Insets top="25.0" />
+         </padding>
+      </MFXListView>
+      <MFXTextField fx:id="totalHoursField" floatMode="BORDER" floatingText="Cantidad de horas" prefWidth="200.0" GridPane.rowIndex="4" />
+      <MFXTextField fx:id="subjectField" allowEdit="false" floatMode="BORDER" floatingText="Materia" prefWidth="200.0" GridPane.rowIndex="2" />
+      <MFXTextField fx:id="idField" allowEdit="false" floatMode="BORDER" floatingText="ID" prefWidth="100.0" GridPane.rowIndex="1" />
+      <MFXTextField fx:id="pricePerHourField" floatMode="BORDER" floatingText="Precio por hora" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <MFXTextField fx:id="teacherField" allowEdit="false" floatMode="BORDER" floatingText="Profesor" prefWidth="200.0" GridPane.rowIndex="3" />
+      <Label alignment="TOP_CENTER" text="Alumnos" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="TOP">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <MFXTextField fx:id="pricePerHourStudentField" floatMode="BORDER" floatingText="Precio por hora alumno" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <MFXButton fx:id="acceptButton" onAction="#accept" text="Aceptar" GridPane.rowIndex="6" />
+      <MFXButton fx:id="cancelButton" onAction="#cancel" text="Cancelar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+      <MFXDatePicker fx:id="dateField" allowEdit="false" floatMode="BORDER" floatingText="Día" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+   </children>
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="20.0" />
+   </padding>
+</GridPane>

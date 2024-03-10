@@ -17,7 +17,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.CacheHint;
@@ -30,7 +29,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -101,7 +99,7 @@ public class HomeScreenController implements Initializable {
 		features.add(new ViewValues("/view/StudentScreen.fxml", "fas-user-graduate", "Alumnos"));
 		features.add(new ViewValues("/view/TeacherScreen.fxml", "fas-user-tie", "Profesores"));
 		features.add(new ViewValues("/view/SubjectScreen.fxml", "fas-book", "Materias"));
-		featuresReload.add(new ViewValues("/view/LessonScreen.fxml", "fas-users-between-lines", "Clases"));
+		featuresReload.add(new ViewValues("/view/AllLessonScreen.fxml", "fas-users-between-lines", "Clases"));
 		featuresReload.add(new ViewValues("/view/StatsScreen.fxml", "fas-chart-column", "Estadísticas"));
 
 		List<ToggleButton> nodes = features.stream().map(f -> {

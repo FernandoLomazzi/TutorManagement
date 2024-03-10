@@ -33,12 +33,12 @@ public class Main extends Application {
 			primaryStage.initStyle(StageStyle.TRANSPARENT);
 			primaryStage.setScene(scene);
 			
-			Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+			/*Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 			primaryStage.setX(primaryScreenBounds.getMinX());
 			primaryStage.setY(primaryScreenBounds.getMinY());
 			primaryStage.setWidth(primaryScreenBounds.getWidth());
-			primaryStage.setHeight(primaryScreenBounds.getHeight());
-			 
+			primaryStage.setHeight(primaryScreenBounds.getHeight());*/
+			
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -112,6 +112,15 @@
 	-mfx-color: -mfx-purple;
 }
 /*
+ * GridPane
+ */
+.grid-pane{
+	-fx-background-color: white;
+	-fx-background-radius: 10;
+	-fx-border-color: -mfx-purple;
+	-fx-border-radius: 10;
+}
+/*
  * Text Area JAVAFX 
  */
 .text-area:focused{
@@ -143,7 +152,15 @@
 .mfx-table-view .virtual-flow .mfx-table-row:selected{
 	-fx-background-color: derive(-mfx-purple, 80%);
 }
-
+/*
+ * List View MaterialFX
+ */
+.lesson-list .virtual-flow .mfx-list-cell:hover{
+	-fx-background-color: derive(-mfx-purple, 100%);
+}
+.lesson-list .virtual-flow .mfx-list-cell:selected{
+	-fx-background-color: derive(-mfx-purple, 80%);
+}
 /*
  * FilterPane MaterialFX
 */

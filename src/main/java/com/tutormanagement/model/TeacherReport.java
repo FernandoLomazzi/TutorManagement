@@ -7,14 +7,14 @@ import java.util.StringJoiner;
 
 public class TeacherReport implements Comparable<TeacherReport>{
 	String teacherName, teacherSurname;
-	Double total, totalHours;
+	Double total, totalHours, studentHourPrice;
 	Integer lessonID;
 	LocalDate day;
 	String subjectName, instName;
 	List<String> students;
 
 	public TeacherReport(String teacherName, String teacherSurname, Double total, Integer id, LocalDate day,
-			Double totalHours, String subjectName, String instName) {
+			Double totalHours, Double studentHourPrice, String subjectName, String instName) {
 		this.teacherName = teacherName;
 		this.teacherSurname = teacherSurname;
 		this.total = total;
@@ -23,6 +23,7 @@ public class TeacherReport implements Comparable<TeacherReport>{
 		this.totalHours = totalHours;
 		this.subjectName = subjectName;
 		this.instName = instName;
+		this.studentHourPrice = studentHourPrice;
 		this.students = new ArrayList<>();
 	}
 
@@ -66,7 +67,13 @@ public class TeacherReport implements Comparable<TeacherReport>{
 	public List<String> getStudents() {
 		return students;
 	}
-
+	
+	public Double getStudentHourPrice() {
+		return studentHourPrice;
+	}
+	public Double getTeacherHourPrice() {
+		return total / totalHours / students.size();
+	}
 	public String getStudentsName() {
 		StringJoiner joiner = new StringJoiner(", ");
 		students.forEach(s -> joiner.add(s));
@@ -79,6 +86,14 @@ public class TeacherReport implements Comparable<TeacherReport>{
 
 	public String getTeacherFullName() {
 		return teacherName+" "+teacherSurname;
+	}
+	
+	public void modifyValues(LocalDate day, Double totalHours, Double pricePerHourStudent, 
+			Double pricePerHour, Integer students) {
+		this.day = day;
+		this.totalHours = totalHours;
+		this.total = pricePerHour * totalHours * students;
+		this.studentHourPrice = pricePerHourStudent;
 	}
 	@Override
 	public int compareTo(TeacherReport o) {

@@ -24,7 +24,7 @@ public class TeacherDaoSQLite implements TeacherDao {
 		Map<String, List<TeacherReport>> teachersReport = new TreeMap<>();
 		String statement = "SELECT\r\n" + "    Teacher.name,\r\n" + "    Teacher.surname,\r\n"
 				+ "    Commission.total,\r\n" + "    Lesson.id,\r\n" + "    Lesson.day,\r\n"
-				+ "    Lesson.total_hours,\r\n" + "    Subject.name,\r\n" + "    Institution.name\r\n" + "FROM\r\n"
+				+ "    Lesson.total_hours, Lesson.price_per_hour, \r\n" + "    Subject.name,\r\n" + "    Institution.name\r\n" + "FROM\r\n"
 				+ "    Commission\r\n" + "INNER JOIN\r\n" + "    Teacher ON Commission.id_teacher = Teacher.id\r\n"
 				+ "INNER JOIN\r\n" + "    Lesson ON Lesson.id = Commission.id_lesson\r\n" + "INNER JOIN\r\n"
 				+ "    Subject ON Lesson.id_subject = Subject.id\r\n" + "INNER JOIN\r\n"
@@ -37,7 +37,7 @@ public class TeacherDaoSQLite implements TeacherDao {
 			while (rs.next()) {
 				String teacherName, teacherSurname;
 
-				Double lessonTotalHours;
+				Double lessonTotalHours, pricePerHourStudent;
 				Integer lessonID;
 				LocalDate lessonDay;
 
@@ -52,10 +52,11 @@ public class TeacherDaoSQLite implements TeacherDao {
 				lessonID = rs.getInt(4);
 				lessonDay = DateParserSQLite.parseString(rs.getString(5));
 				lessonTotalHours = rs.getDouble(6);
-				subjectName = rs.getString(7);
-				instName = rs.getString(8);
+				pricePerHourStudent = rs.getDouble(7);
+				subjectName = rs.getString(8);
+				instName = rs.getString(9);
 				TeacherReport teacherReport = new TeacherReport(teacherName, teacherSurname, commissionTotal, lessonID,
-						lessonDay, lessonTotalHours, subjectName, instName);
+						lessonDay, lessonTotalHours, pricePerHourStudent, subjectName, instName);
 				String teacherCompleteName = teacherName + " " + teacherSurname;
 				if (teachersReport.containsKey(teacherCompleteName)) {
 					teachersReport.get(teacherCompleteName).add(teacherReport);
